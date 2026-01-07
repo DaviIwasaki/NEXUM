@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../store/authStore';
-import '../../styles/layout/sidebar.css';
+import '../../styles/components/layout/sidebar.css';
 
 export default function Sidebar() {
   const { user } = useAuth();
@@ -18,13 +18,13 @@ export default function Sidebar() {
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
       { name: 'Cadastro de Vaga', path: '/vagas/nova' },
-      { name: 'Processos Seletivos', path: '/processos' },
+      { name: 'Processos Seletivos', path: '/processoSeletivo' },
       { name: 'Histórico / Logs', path: '/logs' },
     ],
     Gestor: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Processos Seletivos', path: '/processos' },
+      { name: 'Processos Seletivos', path: '/processoSeletivo' },
       { name: 'Histórico / Logs', path: '/logs' },
     ],
     Admin: [

@@ -1,0 +1,114 @@
+.selection-process-container {
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
+  color: #212145;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  margin-bottom: 16px;
+  color: #555;
+}
+
+.breadcrumb span {
+  cursor: pointer;
+}
+
+.process-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+
+.kanban-column {
+  min-width: 220px;
+  background: #f3f3f8;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-header {
+  background: #212145;
+  color: #fff;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 12px 12px 0 0;
+  text-align: center;
+}
+
+.kanban-cards {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.kanban-card {
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: 0.2s;
+}
+
+.kanban-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.card-name {
+  font-weight: 600;
+}
+
+.card-score {
+  font-size: 12px;
+  color: #555;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.card-actions button {
+  background: #009adb;
+  border: none;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card-actions button:hover {
+  background: #007fb6;
+}
+
+.empty-column {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .kanban-board {
+    flex-direction: column;
+  }
+  .kanban-column {
+    min-width: 100%;
+  }
+}

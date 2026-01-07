@@ -13,6 +13,7 @@ import CompanyCreate from "./pages/CompanyCreate.jsx";
 import CreateJob from "./pages/CreateJob.jsx";
 import JobList from "./pages/JobList.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
+import SelectionProcess from "./pages/SelectionProcess.jsx";
 
 function App() {
   return (
@@ -52,6 +53,8 @@ function App() {
               <Route path="/vagas" element={<JobList />} />
 
               <Route path="/vagas/:id" element={<JobDetails user={{ role: "Candidato" }} />} />
+
+              <Route path="/processoSeletivo" element={<SelectionProcess />} />
 
             </Routes>
           </main>
