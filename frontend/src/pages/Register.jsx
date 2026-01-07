@@ -3,8 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 import { toast } from 'react-toastify';
-import Header from '../components/layout/Header';
-import Footer from '../components/layout/Footer';
 import '../styles/pages/register.css';
 
 export default function Register() {

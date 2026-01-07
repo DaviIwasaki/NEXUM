@@ -1,12 +1,13 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './store/authStore';
-import ProtectedRoute from './routes/ProtectedRoute';
-import Header from './components/layout/Header';
-import Sidebar from './components/layout/Sidebar';
-import Footer from './components/layout/Footer';
-import Login from './pages/auth/Login';
-import './pages/Register.jsx';
-import Register from './pages/Register.jsx';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./store/authStore";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import Header from "./components/layout/Header";
+import Sidebar from "./components/layout/Sidebar";
+import Footer from "./components/layout/Footer";
+import Login from "./pages/auth/Login";
+import "./pages/Register.jsx";
+import Register from "./pages/Register.jsx";
+import CompanyCreate from "./pages/CompanyCreate.jsx";
 
 function Dashboard() {
   return <h1>Dashboard</h1>;
@@ -35,6 +36,16 @@ function App() {
               />
 
               <Route path="/register" element={<Register />} />
+
+              <Route
+                path="/empresas/nova"
+                element={
+                  <ProtectedRoute roles={["Admin"]}>
+                    <CompanyCreate />
+                  </ProtectedRoute>
+                }
+              />
+
             </Routes>
           </main>
         </div>
