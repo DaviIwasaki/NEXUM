@@ -15,6 +15,8 @@ import JobList from "./pages/JobList.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
 import SelectionProcess from "./pages/SelectionProcess.jsx";
 import CandidateProfile from "./pages/CandidateProfile.jsx";
+import CandidateProcessDetails from "./pages/CandidateProcessDetails.jsx";
+import AuditLog from "./pages/AuditLog.jsx";
 
 function App() {
   return (
@@ -58,6 +60,10 @@ function App() {
               <Route path="/processoSeletivo" element={<SelectionProcess />} />
 
               <Route path="/perfil" element={<CandidateProfile />} />
+
+              <Route path="/processoSeletivo/:id" element={<CandidateProcessDetails />} />
+
+              <Route path="/logs" element={<AuditLog />} />
 
             </Routes>
           </main>
