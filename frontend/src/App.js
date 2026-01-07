@@ -4,14 +4,12 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Header from "./components/layout/Header";
 import Sidebar from "./components/layout/Sidebar";
 import Footer from "./components/layout/Footer";
+import "./styles/global.css";
 import Login from "./pages/auth/Login";
 import "./pages/Register.jsx";
 import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import CompanyCreate from "./pages/CompanyCreate.jsx";
-
-function Dashboard() {
-  return <h1>Dashboard</h1>;
-}
 
 function App() {
   return (
