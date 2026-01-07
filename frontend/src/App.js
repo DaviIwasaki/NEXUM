@@ -10,6 +10,7 @@ import "./pages/Register.jsx";
 import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import CompanyCreate from "./pages/CompanyCreate.jsx";
+import CreateJob from "./pages/CreateJob.jsx";
 
 function App() {
   return (
@@ -43,6 +44,9 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              <Route path="/vagas/nova" element={<CreateJob />} />
+
 
             </Routes>
           </main>

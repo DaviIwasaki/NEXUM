@@ -17,7 +17,7 @@ export default function Sidebar() {
     RH: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Cadastro de Vaga', path: '/vagas/novo' },
+      { name: 'Cadastro de Vaga', path: '/vagas/nova' },
       { name: 'Processos Seletivos', path: '/processos' },
       { name: 'Histórico / Logs', path: '/logs' },
     ],

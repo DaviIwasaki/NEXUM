@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../styles/dashboard.css";
+import "../styles/pages/dashboard.css";
 
 const mockDataByRole = {
   candidato: {
