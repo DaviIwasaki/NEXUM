@@ -1,0 +1,202 @@
+/* ===================== CONTAINER ===================== */
+.job-details-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 28px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+}
+
+/* ===================== BREADCRUMB ===================== */
+.breadcrumb {
+  font-size: 14px;
+  margin-bottom: 14px;
+  color: #6b6b6b;
+}
+
+.breadcrumb span {
+  cursor: pointer;
+  color: #009adb;
+}
+
+.breadcrumb span:hover {
+  text-decoration: underline;
+}
+
+/* ===================== HEADER ===================== */
+.job-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.job-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #212145;
+  margin: 0;
+}
+
+.job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+.job-status {
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.job-status.aberta {
+  background: #2e7d32;
+}
+
+.job-status.fechada {
+  background: #d32f2f;
+}
+
+/* ===================== BOTÕES ===================== */
+.job-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+.btn-primary {
+  background: #009adb;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #007fb6;
+}
+
+.btn-secondary {
+  background: #212145;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background: #009adb;
+}
+
+/* ===================== SEÇÕES ===================== */
+.job-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.job-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #212145;
+}
+
+/* ===================== SCROLL DESCRIÇÃO ===================== */
+.job-description-scroll {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 6px;
+  line-height: 1.5;
+}
+
+/* ===================== REQUISITOS ===================== */
+.job-requirements {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.job-requirements li {
+  background: #e6f3ff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* ===================== MÉTRICAS RH ===================== */
+.job-metrics ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.job-metrics li {
+  background: #f0f0f0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+/* ===================== MODAL ===================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.modal-buttons .btn {
+  flex: 1;
+}
+
+/* ===================== RESPONSIVIDADE ===================== */
+@media (max-width: 600px) {
+  .job-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .job-actions {
+    flex-direction: column;
+  }
+
+  .job-description-scroll {
+    max-height: 180px;
+  }
+}

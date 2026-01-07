@@ -11,6 +11,8 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import CompanyCreate from "./pages/CompanyCreate.jsx";
 import CreateJob from "./pages/CreateJob.jsx";
+import JobList from "./pages/JobList.jsx";
+import JobDetails from "./pages/JobDetails.jsx";
 
 function App() {
   return (
@@ -47,6 +49,9 @@ function App() {
 
               <Route path="/vagas/nova" element={<CreateJob />} />
 
+              <Route path="/vagas" element={<JobList />} />
+
+              <Route path="/vagas/:id" element={<JobDetails user={{ role: "Candidato" }} />} />
 
             </Routes>
           </main>

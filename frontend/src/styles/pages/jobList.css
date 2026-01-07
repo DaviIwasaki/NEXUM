@@ -1,0 +1,129 @@
+/* Container geral */
+.joblist-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #fff; /* cor de fundo clara como no primeiro CSS */
+  border-radius: 12px;
+}
+
+/* Cabeçalho da lista */
+.joblist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.joblist-header h1 {
+  color: var(--color-primary, #212145);
+}
+
+/* Botão nova vaga */
+.joblist-new {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.btn-new {
+  background: var(--color-primary, #212145);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-new:hover {
+  background: var(--color-secondary, #009adb);
+}
+
+/* Filtros */
+.joblist-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.joblist-filters label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.joblist-filters input,
+.joblist-filters select {
+  margin-top: 4px;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Tabela */
+.joblist-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.joblist-table th,
+.joblist-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.joblist-table th {
+  background: var(--color-primary, #212145);
+  color: #fff;
+}
+
+/* Hover das linhas clicáveis */
+.clickable-row:hover {
+  background: #e6f3ff;
+  cursor: pointer;
+  color: var(--color-secondary, #009adb);
+}
+
+/* Paginação */
+.joblist-pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.joblist-pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.joblist-pagination button.active {
+  background: var(--color-primary, #212145);
+  color: #fff;
+}
+
+.joblist-pagination button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.btn-details {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #212145;
+  color: white;
+  cursor: pointer;
+}
+
+.btn-details:hover {
+  background: #009adb;
+}
