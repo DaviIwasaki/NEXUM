@@ -14,6 +14,7 @@ import CreateJob from "./pages/CreateJob.jsx";
 import JobList from "./pages/JobList.jsx";
 import JobDetails from "./pages/JobDetails.jsx";
 import SelectionProcess from "./pages/SelectionProcess.jsx";
+import CandidateProfile from "./pages/CandidateProfile.jsx";
 
 function App() {
   return (
@@ -55,6 +56,8 @@ function App() {
               <Route path="/vagas/:id" element={<JobDetails user={{ role: "Candidato" }} />} />
 
               <Route path="/processoSeletivo" element={<SelectionProcess />} />
+
+              <Route path="/perfil" element={<CandidateProfile />} />
 
             </Routes>
           </main>
