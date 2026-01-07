@@ -1,11 +1,16 @@
+// src/components/layout/Sidebar.jsx
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../../store/authStore';
+import { useAuth } from '../../store/AuthStore';
 import '../../styles/components/layout/sidebar.css';
 
 export default function Sidebar() {
   const { user } = useAuth();
 
-  if (!user) return null; // não mostra se não logado
+  // Não mostra sidebar se não estiver logado
+  if (!user) return null;
+
+  // Padronizei tudo para usar "nome" (com "o")
+  const nomeCompleto = user.nome || user.name || "Usuário";
 
   // Menu por papel
   const menuItems = {
@@ -17,37 +22,40 @@ export default function Sidebar() {
     RH: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Cadastro de Vaga', path: '/vagas/nova' },
-      { name: 'Processos Seletivos', path: '/processoSeletivo' },
+      { name: 'Criar Vaga', path: '/vagas/nova' },
       { name: 'Histórico / Logs', path: '/logs' },
     ],
     Gestor: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Processos Seletivos', path: '/processoSeletivo' },
+      { name: 'Processos Seletivos', path: '/processo/1' }, // exemplo, depois pode ser lista
       { name: 'Histórico / Logs', path: '/logs' },
     ],
     Admin: [
       { name: 'Dashboard', path: '/dashboard' },
-      { name: 'Empresas', path: '/empresas' },
-      { name: 'Usuários', path: '/usuarios' },
+      { name: 'Nova Empresa', path: '/empresas/nova' },
       { name: 'Vagas', path: '/vagas' },
       { name: 'Logs', path: '/logs' },
     ],
   };
 
+  const itensDoMenu = menuItems[user.role] || menuItems.Candidato;
+
   return (
     <aside className="app-sidebar">
       <div className="sidebar-profile">
-        <div className="avatar-placeholder">{user.name[0]}</div>
+        {/* Agora seguro: pega a primeira letra do nome */}
+        <div className="avatar-placeholder">
+          {nomeCompleto.charAt(0).toUpperCase()}
+        </div>
         <div className="profile-info">
-          <span className="profile-name">{user.name}</span>
+          <span className="profile-name">{nomeCompleto}</span>
           <span className="profile-role">{user.role}</span>
         </div>
       </div>
 
       <nav className="sidebar-menu">
-        {menuItems[user.role].map((item) => (
+        {itensDoMenu.map((item) => (
           <NavLink
             to={item.path}
             key={item.name}

@@ -1,117 +1,85 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
+// src/pages/auth/Login.jsx
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../store/authStore";
-import "../../styles/pages/auth/login.css";
-
-const LoginSchema = Yup.object({
-  email: Yup.string().email("E-mail inválido").required("Obrigatório"),
-  password: Yup.string().min(8, "Mínimo 8 caracteres").required("Obrigatório"),
-});
+import { useAuth } from "../../store/AuthStore";
+import "../../styles/pages/auth/login.css"; // você pode criar um CSS básico depois
 
 export default function Login() {
+  const [selectedRole, setSelectedRole] = useState("Candidato");
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (values, { setSubmitting }) => {
-    try {
-      // Exemplo de integração futura com backend:
-      // const res = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(values),
-      // });
-      // if (!res.ok) throw new Error('Credenciais inválidas');
-      // const data = await res.json();
-      // login(data.user);
+  const fakeUsers = {
+    Candidato: {
+      id: 101,
+      nome: "Mariana Oliveira",
+      email: "mariana@candidato.com",
+      role: "Candidato",
+    },
+    RH: {
+      id: 201,
+      nome: "Ana Souza",
+      email: "ana@rh.com",
+      role: "RH",
+    },
+    Gestor: {
+      id: 301,
+      nome: "Carlos Lima",
+      email: "carlos@gestor.com",
+      role: "Gestor",
+    },
+    Admin: {
+      id: 401,
+      nome: "Admin Master",
+      email: "admin@nexum.com",
+      role: "Admin",
+    },
+  };
 
-      // Mock atual para testes:
-      const users = {
-        "admin@nexum.com": { name: "Admin", role: "Admin" },
-        "rh@nexum.com": { name: "RH", role: "RH" },
-        "gestor@nexum.com": { name: "Gestor", role: "Gestor" },
-        "candidato@nexum.com": { name: "Candidato", role: "Candidato" },
-      };
-
-      const user = users[values.email];
-      if (!user) {
-        alert("Credenciais inválidas");
-        setSubmitting(false);
-        return;
-      }
-
-      login(user);
-      navigate("/dashboard");
-    } catch (err) {
-      alert(err.message || "Erro no login");
-    } finally {
-      setSubmitting(false);
-    }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const userData = fakeUsers[selectedRole];
+    login(userData, "fake-token-123");
+    navigate("/dashboard");
   };
 
   return (
     <div className="login-page">
-      <div className="login-card">
-        <div className="login-brand">
-          <div className="login-logo">
-            {/* Trocar por <img src="/logo.svg" /> quando tiver a logo */}
-            <span>N</span>
-          </div>
+      <div className="login-container">
+        <div className="login-header">
           <h1>NEXUM</h1>
-          <span>Plataforma inteligente de recrutamento</span>
+          <p>Sistema de Recursos Humanos</p>
         </div>
 
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={LoginSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting, values, setFieldValue }) => (
-            <Form>
-              <div className="login-field">
-                <label>E-mail</label>
-                <Field type="email" name="email" />
-                <ErrorMessage name="email" component="div" className="error" />
-              </div>
+        <form onSubmit={handleLogin} className="login-form">
+          <h2>Login para testes</h2>
+          <p>Escolha seu perfil para entrar rapidamente</p>
 
-              <div className="login-field password-field">
-                <label>Senha</label>
-                <div className="password-wrapper">
-                  <Field
-                    type={values.showPassword ? "text" : "password"}
-                    name="password"
-                  />
-                  <button
-                    type="button"
-                    className="show-password-btn"
-                    onClick={() =>
-                      setFieldValue("showPassword", !values.showPassword)
-                    }
-                  >
-                    {values.showPassword ? "🙈" : "👁️"}
-                  </button>
-                </div>
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="error"
+          <div className="role-selection">
+            {Object.keys(fakeUsers).map((role) => (
+              <label key={role} className="role-option">
+                <input
+                  type="radio"
+                  name="role"
+                  value={role}
+                  checked={selectedRole === role}
+                  onChange={(e) => setSelectedRole(e.target.value)}
                 />
-              </div>
+                <span>{role}</span>
+              </label>
+            ))}
+          </div>
 
-              <button
-                type="submit"
-                className="login-button"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Entrando..." : "Entrar"}
-              </button>
-            </Form>
-          )}
-        </Formik>
+          <button type="submit" className="btn-login">
+            Entrar como {selectedRole}
+          </button>
 
-        <div className="login-footer">
-          © {new Date().getFullYear()} Nexum • Todos os direitos reservados
-        </div>
+          <div className="login-footer">
+            <p>
+              <a href="/register">Criar conta como Candidato</a>
+            </p>
+          </div>
+        </form>
       </div>
     </div>
   );

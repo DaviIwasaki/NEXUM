@@ -1,184 +1,135 @@
 // src/pages/SelectionProcess.jsx
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Modal from "../components/ui/Modal";
-import Button from "../components/ui/Button";
+import { useAuth } from "../store/AuthStore";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import "../styles/pages/selectionProcess.css";
 
 const mockProcess = {
   id: 1,
   title: "Processo Seletivo - Desenvolvedor Frontend",
   etapas: [
-    { id: 1, name: "Triagem", candidates: [] },
-    { id: 2, name: "Entrevista RH", candidates: [] },
-    { id: 3, name: "Entrevista Técnica", candidates: [] },
-    { id: 4, name: "Entrevista Gestor", candidates: [] },
-    { id: 5, name: "Oferta", candidates: [] },
+    { id: 1, name: "Triagem" },
+    { id: 2, name: "Entrevista RH" },
+    { id: 3, name: "Teste Técnico" },
+    { id: 4, name: "Entrevista Gestor" },
+    { id: 5, name: "Oferta" },
   ],
   candidates: [
-    { id: 101, name: "Alice Silva", status: "Triagem", score: 85 },
-    { id: 102, name: "Bruno Costa", status: "Entrevista RH", score: 78 },
-    { id: 103, name: "Carla Souza", status: "Triagem", score: 92 },
-    { id: 104, name: "Diego Lima", status: "Entrevista Técnica", score: 80 },
-    { id: 105, name: "Eduardo Rocha", status: "Triagem", score: 70 },
+    { id: 101, name: "Alice Silva", currentEtapa: "Triagem", score: 85 },
+    { id: 102, name: "Bruno Costa", currentEtapa: "Entrevista RH", score: 78 },
+    { id: 103, name: "Carla Souza", currentEtapa: "Triagem", score: 92 },
+    { id: 104, name: "Diego Lima", currentEtapa: "Teste Técnico", score: 80 },
+    { id: 105, name: "Eduardo Rocha", currentEtapa: "Triagem", score: 70 },
   ],
 };
 
-export default function SelectionProcess({ userRole }) {
+export default function SelectionProcess() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [process, setProcess] = useState(null);
-  const [selectedCandidate, setSelectedCandidate] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+
+  const canMove = ["RH", "Gestor"].includes(user?.role);
 
   useEffect(() => {
-    // Mock GET /processos/{id}
-    const loadProcess = () => {
-      // Distribui candidatos nas etapas
-      const etapas = mockProcess.etapas.map((etapa) => ({
-        ...etapa,
-        candidates: mockProcess.candidates.filter(
-          (c) => c.status === etapa.name
-        ),
-      }));
-      setProcess({ ...mockProcess, etapas });
-    };
-    loadProcess();
+    const etapasComCandidatos = mockProcess.etapas.map((etapa) => ({
+      ...etapa,
+      candidates: mockProcess.candidates.filter(c => c.currentEtapa === etapa.name),
+    }));
+    setProcess({ ...mockProcess, etapas: etapasComCandidatos });
   }, [id]);
 
-  if (!process) return <div className="loading">Carregando processo...</div>;
+  const onDragEnd = (result) => {
+    if (!canMove || !result.destination) return;
 
-  const handleMoveCandidate = (candidateId, direction) => {
-    // Só RH ou Gestor podem mover
-    if (!["RH", "Gestor"].includes(userRole)) {
-      alert("Sem permissão para mover candidato.");
+    const { source, destination } = result;
+
+    if (source.droppableId === destination.droppableId && source.index === destination.index) {
       return;
     }
 
     setProcess((prev) => {
-      const etapasCopy = prev.etapas.map((etapa) => ({
+      const newEtapas = prev.etapas.map(etapa => ({
         ...etapa,
         candidates: [...etapa.candidates],
       }));
 
-      let currentIndex = -1;
-      let candidate = null;
+      const sourceEtapa = newEtapas.find(e => e.id === parseInt(source.droppableId));
+      const destEtapa = newEtapas.find(e => e.id === parseInt(destination.droppableId));
 
-      // Encontra candidato
-      for (let i = 0; i < etapasCopy.length; i++) {
-        const idx = etapasCopy[i].candidates.findIndex(
-          (c) => c.id === candidateId
-        );
-        if (idx !== -1) {
-          candidate = etapasCopy[i].candidates[idx];
-          currentIndex = i;
-          etapasCopy[i].candidates.splice(idx, 1);
-          break;
-        }
-      }
+      const [movedCandidate] = sourceEtapa.candidates.splice(source.index, 1);
+      movedCandidate.currentEtapa = destEtapa.name;
+      destEtapa.candidates.splice(destination.index, 0, movedCandidate);
 
-      if (!candidate) return prev; // não encontrou
+      // Aqui poderia chamar API real: PATCH /candidaturas/move
+      console.log(`Movido ${movedCandidate.name} de ${sourceEtapa.name} para ${destEtapa.name}`);
 
-      const targetIndex =
-        direction === "next" ? currentIndex + 1 : currentIndex - 1;
-
-      if (targetIndex < 0 || targetIndex >= etapasCopy.length) {
-        alert("Não é possível mover mais nessa direção.");
-        return prev;
-      }
-
-      candidate.status = etapasCopy[targetIndex].name;
-      etapasCopy[targetIndex].candidates.push(candidate);
-
-      return { ...prev, etapas: etapasCopy };
+      return { ...prev, etapas: newEtapas };
     });
   };
 
-  const openCandidateModal = (candidate) => {
-    setSelectedCandidate(candidate);
-    setModalOpen(true);
+  const openCandidateDetails = (candidateId) => {
+    navigate(`/candidato/${candidateId}`);
   };
+
+  if (!process) return <div className="loading">Carregando processo...</div>;
 
   return (
     <div className="selection-process-container">
-      {/* Breadcrumb */}
       <nav className="breadcrumb">
-        <span onClick={() => navigate("/dashboard")}>Dashboard</span> &gt;{" "}
-        <span onClick={() => navigate("/jobs")}>Lista de Vagas</span> &gt;{" "}
+        <span onClick={() => navigate("/dashboard")}>Dashboard</span> &gt;
+        <span onClick={() => navigate("/vagas")}>Vagas</span> &gt;
         <span>{process.title}</span>
       </nav>
 
       <h1 className="process-title">{process.title}</h1>
 
-      {/* Kanban mock */}
-      <div className="kanban-board">
-        {process.etapas.map((etapa) => (
-          <div key={etapa.id} className="kanban-column">
-            <div className="kanban-header">{etapa.name}</div>
-            <div className="kanban-cards">
-              {etapa.candidates.map((candidate) => (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="kanban-board">
+          {process.etapas.map((etapa) => (
+            <Droppable droppableId={etapa.id.toString()} key={etapa.id}>
+              {(provided, snapshot) => (
                 <div
-                  key={candidate.id}
-                  className="kanban-card"
-                  onClick={() => openCandidateModal(candidate)}
+                  className={`kanban-column ${snapshot.isDraggingOver ? "dragging-over" : ""}`}
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
                 >
-                  <div className="card-name">{candidate.name}</div>
-                  <div className="card-score">Nota: {candidate.score}</div>
-                  {["RH", "Gestor"].includes(userRole) && (
-                    <div className="card-actions">
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleMoveCandidate(candidate.id, "prev");
-                        }}
+                  <div className="kanban-header">
+                    {etapa.name} ({etapa.candidates.length})
+                  </div>
+                  <div className="kanban-cards">
+                    {etapa.candidates.map((candidate, index) => (
+                      <Draggable
+                        key={candidate.id}
+                        draggableId={candidate.id.toString()}
+                        index={index}
+                        isDragDisabled={!canMove}
                       >
-                        ◀
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleMoveCandidate(candidate.id, "next");
-                        }}
-                      >
-                        ▶
-                      </button>
-                    </div>
-                  )}
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={`kanban-card ${snapshot.isDragging ? "dragging" : ""}`}
+                            onClick={() => openCandidateDetails(candidate.id)}
+                          >
+                            <div className="card-name">{candidate.name}</div>
+                            <div className="card-score">Nota: {candidate.score}/100</div>
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                    {etapa.candidates.length === 0 && <div className="empty-column">Sem candidatos</div>}
+                  </div>
                 </div>
-              ))}
-              {etapa.candidates.length === 0 && (
-                <div className="empty-column">Sem candidatos</div>
               )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Modal detalhado candidato */}
-      {modalOpen && selectedCandidate && (
-        <Modal onClose={() => setModalOpen(false)}>
-          <h2>{selectedCandidate.name}</h2>
-          <p>Status atual: {selectedCandidate.status}</p>
-          <p>Nota fictícia: {selectedCandidate.score}</p>
-          <p>
-            Histórico de etapas:{" "}
-            {process.etapas
-              .map(
-                (etapa) =>
-                  `${etapa.name}: ${
-                    etapa.candidates.some((c) => c.id === selectedCandidate.id)
-                      ? "Presente"
-                      : "Ausente"
-                  }`
-              )
-              .join(", ")}
-          </p>
-          <Button onClick={() => setModalOpen(false)} variant="secondary">
-            Fechar
-          </Button>
-        </Modal>
-      )}
+            </Droppable>
+          ))}
+        </div>
+      </DragDropContext>
     </div>
   );
 }

@@ -1,7 +1,14 @@
-import { useState } from "react";
+// src/pages/CreateJob.jsx
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../store/AuthStore";
+import { toast } from "react-toastify";
 import "../styles/pages/createJob.css";
 
 export default function CreateJob() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const [openSection, setOpenSection] = useState(1);
 
   const [form, setForm] = useState({
@@ -13,16 +20,16 @@ export default function CreateJob() {
     diversidade: {
       pcd: false,
       genero: false,
-      raca: false
+      raca: false,
     },
     etapas: [
       {
         nome: "",
         ordem: 1,
         responsavel: "RH",
-        descricao: ""
-      }
-    ]
+        descricao: "",
+      },
+    ],
   });
 
   const toggleSection = (section) => {
@@ -39,8 +46,8 @@ export default function CreateJob() {
       ...form,
       diversidade: {
         ...form.diversidade,
-        [key]: !form.diversidade[key]
-      }
+        [key]: !form.diversidade[key],
+      },
     });
   };
 
@@ -51,7 +58,10 @@ export default function CreateJob() {
   };
 
   const addEtapa = () => {
-    if (form.etapas.length >= 10) return;
+    if (form.etapas.length >= 10) {
+      toast.warn("Máximo de 10 etapas permitido.");
+      return;
+    }
 
     setForm({
       ...form,
@@ -61,33 +71,57 @@ export default function CreateJob() {
           nome: "",
           ordem: form.etapas.length + 1,
           responsavel: "RH",
-          descricao: ""
-        }
-      ]
+          descricao: "",
+        },
+      ],
     });
+  };
+
+  const removeEtapa = (index) => {
+    if (form.etapas.length <= 1) {
+      toast.warn("É necessário ter pelo menos uma etapa.");
+      return;
+    }
+    const updated = form.etapas.filter((_, i) => i !== index);
+    // Reordena automaticamente
+    updated.forEach((etapa, i) => (etapa.ordem = i + 1));
+    setForm({ ...form, etapas: updated });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("Payload final:", form);
+    // Validação básica
+    if (!form.titulo.trim()) {
+      toast.error("O título da vaga é obrigatório.");
+      return;
+    }
+    if (form.etapas.some((etapa) => !etapa.nome.trim())) {
+      toast.error("Todas as etapas devem ter um nome.");
+      return;
+    }
 
-    alert("Vaga criada com sucesso (mock)!");
-    // depois:
-    // POST /vagas
-    // POST /processos_seletivos
-    // POST /etapas
+    // Mock de criação (depois será POST real)
+    console.log("Vaga criada por:", user?.nome);
+    console.log("Payload:", form);
+
+    toast.success("Vaga criada com sucesso!");
+    
+    // Redireciona para lista de vagas
+    setTimeout(() => {
+      navigate("/vagas");
+    }, 1500);
   };
 
   return (
     <main className="create-job-container">
-      <h1>Criar nova vaga</h1>
-      <p className="subtitle">
-        Preencha as informações abaixo para abrir uma nova vaga
-      </p>
+      <div className="create-job-header">
+        <h1>Criar Nova Vaga</h1>
+        <p>Preencha os detalhes para abrir uma nova oportunidade</p>
+      </div>
 
       <form onSubmit={handleSubmit} className="create-job-form">
-        {/* Seção 1 */}
+        {/* Seção 1: Dados da Vaga */}
         <div className="accordion">
           <button
             type="button"
@@ -101,21 +135,24 @@ export default function CreateJob() {
           {openSection === 1 && (
             <div className="accordion-content">
               <label>
-                Título da vaga
+                Título da vaga *
                 <input
                   name="titulo"
                   value={form.titulo}
                   onChange={handleChange}
                   required
+                  placeholder="Ex: Desenvolvedor Frontend Pleno"
                 />
               </label>
 
               <label>
-                Descrição
+                Descrição (Markdown suportado)
                 <textarea
                   name="descricao"
+                  rows="6"
                   value={form.descricao}
                   onChange={handleChange}
+                  placeholder="- Cultura de inovação&#10;- Home office híbrido&#10;- Benefícios completos"
                 />
               </label>
 
@@ -123,29 +160,33 @@ export default function CreateJob() {
                 Requisitos
                 <textarea
                   name="requisitos"
+                  rows="5"
                   value={form.requisitos}
                   onChange={handleChange}
+                  placeholder="• Experiência com React&#10;• Conhecimento em TypeScript&#10;• Inglês intermediário"
                 />
               </label>
 
               <div className="salary-group">
                 <label>
-                  Salário mínimo
+                  Salário mínimo (R$)
                   <input
                     type="number"
                     name="salarioMin"
                     value={form.salarioMin}
                     onChange={handleChange}
+                    min="0"
                   />
                 </label>
 
                 <label>
-                  Salário máximo
+                  Salário máximo (R$)
                   <input
                     type="number"
                     name="salarioMax"
                     value={form.salarioMax}
                     onChange={handleChange}
+                    min="0"
                   />
                 </label>
               </div>
@@ -181,14 +222,14 @@ export default function CreateJob() {
           )}
         </div>
 
-        {/* Seção 2 */}
+        {/* Seção 2: Etapas do Processo */}
         <div className="accordion">
           <button
             type="button"
             className="accordion-header"
             onClick={() => toggleSection(2)}
           >
-            <span>🧩 Etapas do Processo</span>
+            <span>🧩 Etapas do Processo Seletivo</span>
             <span>{openSection === 2 ? "−" : "+"}</span>
           </button>
 
@@ -196,14 +237,28 @@ export default function CreateJob() {
             <div className="accordion-content">
               {form.etapas.map((etapa, index) => (
                 <div key={index} className="etapa-card">
+                  <div className="etapa-header">
+                    <span>Etapa {index + 1}</span>
+                    {form.etapas.length > 1 && (
+                      <button
+                        type="button"
+                        className="remove-etapa"
+                        onClick={() => removeEtapa(index)}
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+
                   <label>
-                    Nome da etapa
+                    Nome da etapa *
                     <input
                       value={etapa.nome}
                       onChange={(e) =>
                         handleEtapaChange(index, "nome", e.target.value)
                       }
                       required
+                      placeholder="Ex: Triagem de Currículos"
                     />
                   </label>
 
@@ -212,14 +267,12 @@ export default function CreateJob() {
                     <input
                       type="number"
                       value={etapa.ordem}
-                      onChange={(e) =>
-                        handleEtapaChange(index, "ordem", e.target.value)
-                      }
+                      readOnly
                     />
                   </label>
 
                   <label>
-                    Responsável
+                    Responsável principal
                     <select
                       value={etapa.responsavel}
                       onChange={(e) =>
@@ -227,17 +280,18 @@ export default function CreateJob() {
                       }
                     >
                       <option value="RH">RH</option>
-                      <option value="GESTOR">Gestor</option>
+                      <option value="Gestor">Gestor</option>
                     </select>
                   </label>
 
                   <label>
-                    Descrição
+                    Descrição da etapa
                     <textarea
                       value={etapa.descricao}
                       onChange={(e) =>
                         handleEtapaChange(index, "descricao", e.target.value)
                       }
+                      placeholder="Ex: Análise inicial de currículos e fit cultural"
                     />
                   </label>
                 </div>
@@ -248,15 +302,20 @@ export default function CreateJob() {
                 className="add-step-btn"
                 onClick={addEtapa}
               >
-                + Adicionar etapa
+                + Adicionar nova etapa
               </button>
             </div>
           )}
         </div>
 
-        <button type="submit" className="submit-btn">
-          Criar Vaga
-        </button>
+        <div className="form-actions">
+          <button type="button" className="btn-cancel" onClick={() => navigate("/vagas")}>
+            Cancelar
+          </button>
+          <button type="submit" className="btn-submit">
+            Criar Vaga
+          </button>
+        </div>
       </form>
     </main>
   );

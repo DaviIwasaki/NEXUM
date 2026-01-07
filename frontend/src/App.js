@@ -1,75 +1,146 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./store/authStore";
+// src/App.js
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./store/AuthStore";
 import ProtectedRoute from "./routes/ProtectedRoute";
+
 import Header from "./components/layout/Header";
 import Sidebar from "./components/layout/Sidebar";
 import Footer from "./components/layout/Footer";
+
+import Login from "./pages/auth/Login"; // ajuste o caminho se necessário
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import CompanyCreate from "./pages/CompanyCreate";
+import CreateJob from "./pages/CreateJob";
+import JobList from "./pages/JobList";
+import JobDetails from "./pages/JobDetails";
+import SelectionProcess from "./pages/SelectionProcess";
+import CandidateProfile from "./pages/CandidateProfile";
+import CandidateProcessDetails from "./pages/CandidateProcessDetails";
+import AuditLog from "./pages/AuditLog";
+import EditJob from "./pages/EditJob";
+
 import "./styles/global.css";
-import Login from "./pages/auth/Login";
-import "./pages/Register.jsx";
-import Register from "./pages/Register.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import CompanyCreate from "./pages/CompanyCreate.jsx";
-import CreateJob from "./pages/CreateJob.jsx";
-import JobList from "./pages/JobList.jsx";
-import JobDetails from "./pages/JobDetails.jsx";
-import SelectionProcess from "./pages/SelectionProcess.jsx";
-import CandidateProfile from "./pages/CandidateProfile.jsx";
-import CandidateProcessDetails from "./pages/CandidateProcessDetails.jsx";
-import AuditLog from "./pages/AuditLog.jsx";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Header />
+        <div className="app-wrapper">
+          <Header />
 
-        <div className="main-layout">
-          <Sidebar />
+          <div className="main-layout">
+            <Sidebar />
 
-          <main className="main-content">
-            <Routes>
-              <Route path="/login" element={<Login />} />
+            <main className="main-content">
+              <Routes>
+                {/* Rotas públicas */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <Dashboard />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Rotas protegidas */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/register" element={<Register />} />
+                <Route
+                  path="/"
+                  element={<Navigate to="/dashboard" replace />}
+                />
 
-              <Route
-                path="/empresas/nova"
-                element={
-                  <ProtectedRoute roles={["Admin"]}>
-                    <CompanyCreate />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Admin */}
+                <Route
+                  path="/empresas/nova"
+                  element={
+                    <ProtectedRoute roles={["Admin"]}>
+                      <CompanyCreate />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/vagas/nova" element={<CreateJob />} />
+                {/* RH */}
+                <Route
+                  path="/vagas/nova"
+                  element={
+                    <ProtectedRoute roles={["RH"]}>
+                      <CreateJob />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/vagas" element={<JobList />} />
+                {/* Todos logados */}
+                <Route
+                  path="/vagas"
+                  element={
+                    <ProtectedRoute>
+                      <JobList />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/vagas/:id" element={<JobDetails user={{ role: "Candidato" }} />} />
+                <Route
+                  path="/vagas/:id"
+                  element={
+                    <ProtectedRoute>
+                      <JobDetails />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/processoSeletivo" element={<SelectionProcess />} />
+                {/* RH e Gestor */}
+                <Route
+                  path="/processo/:id"
+                  element={
+                    <ProtectedRoute roles={["RH", "Gestor"]}>
+                      <SelectionProcess />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/perfil" element={<CandidateProfile />} />
+                <Route
+                  path="/candidato/:candidaturaId"
+                  element={
+                    <ProtectedRoute roles={["RH", "Gestor"]}>
+                      <CandidateProcessDetails />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/processoSeletivo/:id" element={<CandidateProcessDetails />} />
+                {/* Todos logados */}
+                <Route
+                  path="/perfil"
+                  element={
+                    <ProtectedRoute>
+                      <CandidateProfile />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route path="/logs" element={<AuditLog />} />
+                {/* Admin, RH e Gestor */}
+                <Route
+                  path="/logs"
+                  element={
+                    <ProtectedRoute roles={["Admin", "RH", "Gestor"]}>
+                      <AuditLog />
+                    </ProtectedRoute>
+                  }
+                />
 
-            </Routes>
-          </main>
+                <Route path="/vagas/:id/edit" element={<ProtectedRoute roles={["RH"]}><EditJob /></ProtectedRoute>} />
+
+                {/* Rota fallback */}
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+              </Routes>
+            </main>
+          </div>
+
+          <Footer />
         </div>
-
-        <Footer />
       </BrowserRouter>
     </AuthProvider>
   );

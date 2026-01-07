@@ -112,3 +112,6 @@
     min-width: 100%;
   }
 }
+
+.kanban-column.dragging-over { background: rgba(0, 154, 219, 0.1); border: 2px dashed #009ADB; }
+.kanban-card.dragging { opacity: 0.7; box-shadow: 0 8px 16px rgba(0,0,0,0.2); transform: scale(1.05); }
