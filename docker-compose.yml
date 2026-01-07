@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres  # Padrão, não mude
+      POSTGRES_PASSWORD: pass132  # Sua senha aqui
+      POSTGRES_DB: nexum  # Nome do DB que criaremos
+    ports:
+      - "5432:5432"  # Porta local:container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persiste dados
+
+  backend:
+    build: ./backend  # Usa o Dockerfile do backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:pass132@db:5432/nexum  # Conecta ao DB via container
+
+  frontend:
+    build: ./frontend  # Usa o Dockerfile do frontend
+    ports:
+      - "3000:80"  # Mapeia 3000 local para 80 no container
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,249 @@
+/* ===================== HIDE SIDEBAR ===================== */
+.sidebar {
+  display: none;
+}
+
+/* ===================== BASE ===================== */
+.login-page {
+  min-height: calc(100vh - 76px); /* Ajuste para header/footer */
+  padding: 40px 16px; /* reduz padding geral */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===================== CARD ===================== */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: clamp(20px, 4%, 40px);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  z-index: 1;
+  max-height: 90vh; /* não ocupa 100% da tela */
+  overflow-y: auto; /* scroll se necessário */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ===================== BRAND ===================== */
+.login-brand {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-brand h1 {
+  font-size: clamp(20px, 5vw, 32px);
+  font-weight: 700;
+  color: #212145;
+  margin-bottom: 4px;
+}
+
+.login-brand span {
+  font-size: clamp(12px, 2.5vw, 14px);
+  color: #6b7280;
+}
+
+.login-logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #212145, #009adb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo span {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* ===================== FORM ===================== */
+.login-field {
+  margin-bottom: 16px;
+}
+
+.login-field label {
+  display: block;
+  font-size: clamp(12px, 2.5vw, 13px);
+  font-weight: 500;
+  color: #212145;
+  margin-bottom: 4px;
+}
+
+.login-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: clamp(12px, 2.5vw, 14px);
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: #009adb;
+  box-shadow: 0 0 0 2px rgba(0, 154, 219, 0.15);
+}
+
+/* Password toggle */
+.password-wrapper {
+  position: relative;
+}
+
+.show-password-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* ===================== BUTTON ===================== */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #009adb;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: clamp(14px, 2.5vw, 15px);
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.login-button:hover {
+  background-color: #007fb6;
+}
+
+/* ===================== FOOTER ===================== */
+.login-footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: clamp(12px, 2vw, 13px);
+  color: #6b7280;
+}
+
+/* ===================== ERRO ===================== */
+.error {
+  font-size: clamp(10px, 2vw, 12px);
+  color: #dc2626;
+  margin-top: 4px;
+}
+
+/* ===================== BACKGROUND AURORA + NEON ===================== */
+.login-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(0,154,219,0.4),
+    rgba(33,33,69,0.6),
+    rgba(0,154,219,0.3),
+    rgba(33,33,69,0.5)
+  );
+  background-size: 400% 400%;
+  filter: blur(80px);
+  transform: scale(1.3);
+  animation: auroraNeon 30s ease-in-out infinite;
+}
+
+@keyframes auroraNeon {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===================== MOBILE RESPONSIVE ===================== */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 20px 16px;
+  }
+
+  .login-logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .login-logo span {
+    font-size: 22px;
+  }
+
+  .login-brand h1 {
+    font-size: 18px;
+  }
+
+  .login-brand span {
+    font-size: 11px;
+  }
+
+  .login-field input {
+    font-size: 12px;
+    padding: 10px 10px;
+  }
+
+  .login-button {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .show-password-btn {
+    font-size: 14px;
+  }
+}
+
+/* ===================== TELAS MUITO PEQUENAS ===================== */
+@media (max-width: 360px) {
+  .login-card {
+    padding: 16px 12px;
+    max-height: 95vh;
+  }
+
+  .login-logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .login-logo span {
+    font-size: 20px;
+  }
+
+  .login-brand h1 {
+    font-size: 16px;
+  }
+
+  .login-brand span {
+    font-size: 10px;
+  }
+
+  .login-field input {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+
+  .login-button {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .show-password-btn {
+    font-size: 12px;
+  }
+}
