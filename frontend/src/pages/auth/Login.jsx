@@ -2,7 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/authStore";
-import "../../styles/auth/login.css";
+import "../../styles/pages/auth/login.css";
 
 const LoginSchema = Yup.object({
   email: Yup.string().email("E-mail inválido").required("Obrigatório"),
