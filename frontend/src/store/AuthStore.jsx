@@ -15,7 +15,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Ao carregar a página, verifica se já tem usuário logado (token + user no localStorage)
   useEffect(() => {
     const token = localStorage.getItem('nexum_token');
     const savedUser = localStorage.getItem('nexum_user');
@@ -34,7 +33,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData, token = 'fake-jwt-token') => {
-    // Em produção aqui viria o token real do backend
     localStorage.setItem('nexum_token', token);
     localStorage.setItem('nexum_user', JSON.stringify(userData));
     setUser(userData);

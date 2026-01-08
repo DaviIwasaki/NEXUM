@@ -15,10 +15,11 @@ import CreateJob from "./pages/CreateJob";
 import JobList from "./pages/JobList";
 import JobDetails from "./pages/JobDetails";
 import SelectionProcess from "./pages/SelectionProcess";
-import CandidateProfile from "./pages/CandidateProfile";
+import PersonProfile from "./pages/PersonProfile";
 import CandidateProcessDetails from "./pages/CandidateProcessDetails";
 import AuditLog from "./pages/AuditLog";
 import EditJob from "./pages/EditJob";
+import EmployeeList from "./pages/employees/EmployeeList";
 
 import "./styles/global.css";
 
@@ -37,7 +38,6 @@ function App() {
                 {/* Rotas públicas */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-
                 {/* Rotas protegidas */}
                 <Route
                   path="/dashboard"
@@ -47,12 +47,10 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 <Route
                   path="/"
                   element={<Navigate to="/dashboard" replace />}
                 />
-
                 {/* Admin */}
                 <Route
                   path="/empresas/nova"
@@ -62,7 +60,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* RH */}
                 <Route
                   path="/vagas/nova"
@@ -72,7 +69,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Todos logados */}
                 <Route
                   path="/vagas"
@@ -82,7 +78,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 <Route
                   path="/vagas/:id"
                   element={
@@ -91,7 +86,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* RH e Gestor */}
                 <Route
                   path="/processo/:id"
@@ -101,7 +95,6 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 <Route
                   path="/candidato/:candidaturaId"
                   element={
@@ -110,17 +103,15 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Todos logados */}
                 <Route
                   path="/perfil"
                   element={
-                    <ProtectedRoute>
-                      <CandidateProfile />
+                    <ProtectedRoute roles={["Candidato", "Colaborador"]}>
+                      <PersonProfile />
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Admin, RH e Gestor */}
                 <Route
                   path="/logs"
@@ -130,11 +121,45 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
-                <Route path="/vagas/:id/edit" element={<ProtectedRoute roles={["RH"]}><EditJob /></ProtectedRoute>} />
-
+                <Route
+                  path="/vagas/:id/edit"
+                  element={
+                    <ProtectedRoute roles={["RH"]}>
+                      <EditJob />
+                    </ProtectedRoute>
+                  }
+                />
                 {/* Rota fallback */}
-                <Route path="*" element={<Navigate to="/dashboard" replace />} />
+                <Route
+                  path="*"
+                  element={<Navigate to="/dashboard" replace />}
+                />
+                <Route
+                  path="/colaboradores"
+                  element={
+                    <ProtectedRoute
+                      roles={["RH", "Admin", "Gestor", "Colaborador"]}
+                    >
+                      <EmployeeList />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/colaboradores/:id"
+                  element={
+                    <ProtectedRoute roles={["RH", "Admin", "Gestor"]}>
+                      <PersonProfile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/meu-perfil"
+                  element={
+                    <ProtectedRoute roles={["Colaborador"]}>
+                      <PersonProfile />
+                    </ProtectedRoute>
+                  }
+                />
               </Routes>
             </main>
           </div>

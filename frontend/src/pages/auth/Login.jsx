@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
-import "../../styles/pages/auth/login.css"; // você pode criar um CSS básico depois
+import "../../styles/pages/auth/login.css";
 
 export default function Login() {
   const [selectedRole, setSelectedRole] = useState("Candidato");
@@ -33,6 +33,20 @@ export default function Login() {
       nome: "Admin Master",
       email: "admin@nexum.com",
       role: "Admin",
+    },
+    Colaborador: {  // NOVO
+      id: 501,
+      nome: "João Silva",
+      email: "joao@colaborador.com",
+      role: "Colaborador",
+      cargo: "Desenvolvedor Frontend",
+      departamento: "TI",
+    },
+    Auditor: {  // NOVO
+      id: 601,
+      nome: "Laura Mendes",
+      email: "laura@auditor.com",
+      role: "Auditor",
     },
   };
 

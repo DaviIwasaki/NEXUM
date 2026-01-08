@@ -7,7 +7,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../store/AuthStore";
 import "../styles/pages/register.css";
-import pdfParse from "pdf-parse";
+import * as pdfjsLib from "pdfjs-dist";
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
 
 export default function Register() {
   const [curriculo, setCurriculo] = useState(null);
@@ -51,7 +55,7 @@ export default function Register() {
 
       if (curriculo) {
         const arrayBuffer = await curriculo.arrayBuffer();
-        const pdfData = await pdfParse(arrayBuffer);
+        const pdfData = await pdfjsLib(arrayBuffer);
         const textoExtraido = pdfData.text.substring(0, 500); // limite para preview
         novoUsuario.curriculoTexto = textoExtraido;
         console.log("Texto extraído do currículo:", textoExtraido);

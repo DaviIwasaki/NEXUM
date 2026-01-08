@@ -4,38 +4,51 @@ import { useAuth } from '../../store/AuthStore';
 import '../../styles/components/layout/sidebar.css';
 
 export default function Sidebar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
-  // Não mostra sidebar se não estiver logado
   if (!user) return null;
 
-  // Padronizei tudo para usar "nome" (com "o")
   const nomeCompleto = user.nome || user.name || "Usuário";
 
-  // Menu por papel
   const menuItems = {
     Candidato: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Perfil', path: '/perfil' },
+      { name: 'Meu Perfil', path: '/perfil' },
+    ],
+    Colaborador: [  // NOVO MENU
+      { name: 'Dashboard', path: '/dashboard' },
+      { name: 'Meu Perfil', path: '/perfil' },
+      { name: 'Meu Ponto', path: '/ponto' },
+      { name: 'Meus Benefícios', path: '/beneficios' },
+      { name: 'Minhas Avaliações', path: '/avaliacoes' },
+      { name: 'Treinamentos', path: '/treinamentos' },
     ],
     RH: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
       { name: 'Criar Vaga', path: '/vagas/nova' },
-      { name: 'Histórico / Logs', path: '/logs' },
+      { name: 'Colaboradores', path: '/colaboradores' },
+      { name: 'Logs', path: '/logs' },
     ],
     Gestor: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Vagas', path: '/vagas' },
-      { name: 'Processos Seletivos', path: '/processo/1' }, // exemplo, depois pode ser lista
-      { name: 'Histórico / Logs', path: '/logs' },
+      { name: 'Minha Equipe', path: '/equipe' },
+      { name: 'Avaliações', path: '/avaliacoes' },
+      { name: 'Logs', path: '/logs' },
     ],
     Admin: [
       { name: 'Dashboard', path: '/dashboard' },
       { name: 'Nova Empresa', path: '/empresas/nova' },
-      { name: 'Vagas', path: '/vagas' },
+      { name: 'Usuários', path: '/usuarios' },
+      { name: 'Configurações', path: '/configuracoes' },
       { name: 'Logs', path: '/logs' },
+    ],
+    Auditor: [  // NOVO MENU READ-ONLY
+      { name: 'Dashboard', path: '/dashboard' },
+      { name: 'Logs de Auditoria', path: '/logs' },
+      { name: 'Relatórios Compliance', path: '/relatorios/compliance' },
     ],
   };
 
@@ -44,7 +57,6 @@ export default function Sidebar() {
   return (
     <aside className="app-sidebar">
       <div className="sidebar-profile">
-        {/* Agora seguro: pega a primeira letra do nome */}
         <div className="avatar-placeholder">
           {nomeCompleto.charAt(0).toUpperCase()}
         </div>
@@ -67,6 +79,12 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      <div className="sidebar-footer">
+        <button onClick={logout} className="btn-logout">
+          Sair
+        </button>
+      </div>
     </aside>
   );
 }
