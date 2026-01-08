@@ -21,6 +21,10 @@ import EditJob from "./pages/EditJob";
 import EmployeeList from "./pages/employees/EmployeeList";
 import NewEmployee from "./pages/employees/NewEmployee";
 import ContractChange from "./pages/employees/ContractChange";
+import TimeClock from "./pages/point/TimeClock";
+import PointMirror from "./pages/point/PointMirror";
+import PendingApprovals from "./pages/point/PendingApprovals";
+import PayrollCalculation from "./pages/payroll/PayrollCalculation";
 
 import "./styles/global.css";
 
@@ -199,6 +203,40 @@ function App() {
                 <AppLayout>
                   <ContractChange />
                 </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ponto"
+            element={
+              <ProtectedRoute roles={["Colaborador"]}>
+                <TimeClock />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/espelho-ponto"
+            element={
+              <ProtectedRoute roles={["Colaborador", "Gestor", "RH"]}>
+                <PointMirror />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/aprovacoes-pendentes"
+            element={
+              <ProtectedRoute roles={["Gestor"]}>
+                <PendingApprovals />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/folha-calculo"
+            element={
+              <ProtectedRoute roles={["RH", "Admin"]}>
+                <PayrollCalculation />
               </ProtectedRoute>
             }
           />

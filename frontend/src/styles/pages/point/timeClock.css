@@ -1,0 +1,207 @@
+.timeclock-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", sans-serif;
+  color: #2b2b3a;
+}
+
+/* Cabeçalho */
+.timeclock-header {
+  margin-bottom: 24px;
+}
+
+.timeclock-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.timeclock-header p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.current-time {
+  margin-bottom: 8px;
+}
+
+.current-time .clock {
+  font-size: 24px;
+  font-weight: 600;
+  color: #009adb;
+}
+
+.banco-horas {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.banco-horas .positivo {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.banco-horas .negativo {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* Botões de ação */
+.timeclock-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.timeclock-actions button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-entrada {
+  background: #16a34a;
+  color: #fff;
+}
+
+.btn-saida {
+  background: #dc2626;
+  color: #fff;
+}
+
+.btn-justificativa {
+  background: #009adb;
+  color: #fff;
+}
+
+/* Calendar */
+.calendar-section {
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  margin-bottom: 24px;
+}
+
+.calendar-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.react-calendar {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-family: inherit;
+}
+
+.dot-indicator {
+  width: 6px;
+  height: 6px;
+  background: #009adb;
+  border-radius: 50%;
+  margin: 2px auto 0 auto;
+}
+
+/* Registros diários */
+.daily-records {
+  background: #fff;
+  padding: 18px 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.daily-records h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.daily-records ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.daily-records li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.daily-records li:last-child {
+  border-bottom: none;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 22px;
+  border-radius: 14px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.modal-box h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.modal-box textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  resize: none;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-actions .btn-primary {
+  background: #009adb;
+  color: #fff;
+}
+
+.modal-actions button:not(.btn-primary) {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .timeclock-actions {
+    flex-direction: column;
+  }
+}

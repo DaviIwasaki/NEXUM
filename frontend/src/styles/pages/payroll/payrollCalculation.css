@@ -1,0 +1,128 @@
+.payroll-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 24px;
+  font-family: 'Inter', sans-serif;
+  color: #212145;
+}
+
+.payroll-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 16px;
+}
+
+.payroll-title h1 {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.payroll-user {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.month-selector {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+}
+
+.month-selector input {
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.preview-section,
+.summary-section {
+  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.preview-text {
+  font-size: 1.05rem;
+}
+
+.btn-generate,
+.btn-pdf {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #212145;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-generate:hover,
+.btn-pdf:hover {
+  background: #009adb;
+}
+
+.success-message {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #009adb;
+}
+
+.summary-cards {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.summary-cards .card {
+  flex: 1;
+  min-width: 180px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f6f6f8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.payroll-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.payroll-table th,
+.payroll-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.payroll-table th {
+  background: #212145;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payroll-table td strong {
+  color: #212145;
+}
+
+h2 {
+  margin-bottom: 16px;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
