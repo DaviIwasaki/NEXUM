@@ -26,7 +26,9 @@ export default function Sidebar() {
       { name: "Treinamentos", path: "/treinamentos" },
       { name: "Registro de Ponto", path: "/ponto" },
       { name: "Espelho de Ponto", path: "/espelho-ponto" },
-      { name: 'Meu Holerite', path: '/holerite' },
+      { name: "Meu Holerite", path: "/holerite" },
+      { name: "Catálogo de Benefícios", path: "/beneficios/catalogo" },
+      { name: "Meus Benefícios", path: "/meus-beneficios" },
     ],
     RH: [
       { name: "Dashboard", path: "/dashboard" },
@@ -34,9 +36,10 @@ export default function Sidebar() {
       { name: "Criar Vaga", path: "/vagas/nova" },
       { name: "Colaboradores", path: "/colaboradores" },
       { name: "Logs", path: "/logs" },
-      { name: 'Espelho de Ponto (Equipe)', path: '/espelho-ponto' },
-      { name: 'Cálculo da Folha', path: '/folha-calculo' },
-      { name: 'Relatórios Fiscais', path: '/relatorios-fiscais' },
+      { name: "Espelho de Ponto (Equipe)", path: "/espelho-ponto" },
+      { name: "Cálculo da Folha", path: "/folha-calculo" },
+      { name: "Relatórios Fiscais", path: "/relatorios-fiscais" },
+      { name: "Meus Benefícios (Aprovações)", path: "/meus-beneficios" },
     ],
     Gestor: [
       { name: "Dashboard", path: "/dashboard" },
@@ -44,7 +47,7 @@ export default function Sidebar() {
       { name: "Minha Equipe", path: "/equipe" },
       { name: "Avaliações", path: "/avaliacoes" },
       { name: "Logs", path: "/logs" },
-      { name: 'Aprovações Pendentes', path: '/aprovacoes-pendentes' },
+      { name: "Aprovações Pendentes", path: "/aprovacoes-pendentes" },
     ],
     Admin: [
       { name: "Dashboard", path: "/dashboard" },

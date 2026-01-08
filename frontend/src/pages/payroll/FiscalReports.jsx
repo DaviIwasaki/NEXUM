@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
+import "../../styles/pages/payroll/fiscalReports.css";
 
 const mockRelatorios = [
   { nome: "eSocial - Eventos Periódicos", mes: "2026-01", status: "Gerado" },

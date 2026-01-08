@@ -2,6 +2,7 @@
 import React from "react";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
+import "../../styles/pages/benefits/myBenefits.css";
 
 const mockMeusBeneficios = [
   {

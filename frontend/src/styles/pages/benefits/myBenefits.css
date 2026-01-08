@@ -1,0 +1,128 @@
+.my-benefits-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", sans-serif;
+  color: #2b2b3a;
+}
+
+.my-benefits-container h1 {
+  font-size: 26px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.my-benefits-container p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Tabela de benefícios */
+.benefits-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+.benefits-table thead {
+  background: #f0f3ff;
+}
+
+.benefits-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+}
+
+.benefits-table td {
+  padding: 12px;
+  font-size: 14px;
+  border-top: 1px solid #eee;
+}
+
+.benefits-table tr:hover {
+  background: #f9fafc;
+}
+
+/* Status */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.status-badge.ativo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.pendente-aprovação,
+.status-badge.pendente-aprovacao {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.inativo {
+  background: #fee2e2;
+  color: #7f1d1d;
+}
+
+/* Botões */
+.btn-approve {
+  padding: 6px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #16a34a;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-approve:hover {
+  opacity: 0.85;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .benefits-table {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .benefits-table thead {
+    display: none;
+  }
+
+  .benefits-table tr {
+    display: block;
+    border-bottom: 1px solid #eee;
+    padding: 12px;
+  }
+
+  .benefits-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+
+  .benefits-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #555;
+  }
+}
+@media (max-width: 480px) {
+  .my-benefits-container {
+    padding: 16px;
+  }
+}

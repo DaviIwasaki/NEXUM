@@ -3,6 +3,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
+import "../../styles/pages/payroll/payslipIndividual.css";
 
 const mockHolerite = {
   colaborador: "João Silva",
