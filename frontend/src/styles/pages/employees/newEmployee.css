@@ -1,0 +1,156 @@
+.new-employee-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Cabeçalho */
+.form-header {
+  margin-bottom: 24px;
+}
+
+.form-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #212145;
+}
+
+.form-header p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Formulário */
+.new-employee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Seções */
+.accordion-section {
+  background: #fff;
+  padding: 20px 22px;
+  border-radius: 14px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.accordion-section h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: #212145;
+}
+
+/* Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* Campos */
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #374151;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #009adb;
+  box-shadow: 0 0 0 2px rgba(0,154,219,0.15);
+}
+
+/* Erro */
+.error {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Dependentes */
+.dependente-group {
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 10px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+}
+
+.add-dependente {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  color: #009adb;
+}
+
+.remove-dependente {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #dc2626;
+}
+
+/* Ações */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.form-actions button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.form-actions button[type="submit"] {
+  background: #16a34a;
+  color: #fff;
+}
+
+.form-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .new-employee-container {
+    padding: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}

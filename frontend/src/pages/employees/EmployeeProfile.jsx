@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css"; // npm i react-tabs se não tiver
+import "../../styles/pages/employees/employeeProfile.css";
 
 const mockHistorico = [
   { data: "2025-03-01", evento: "Admissão", cargo: "Desenvolvedor Frontend", salario: "R$ 8.000" },

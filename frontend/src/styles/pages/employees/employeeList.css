@@ -1,0 +1,159 @@
+.employee-list-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.employee-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.employee-list-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #212145;
+}
+
+.btn-new {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  background: #009adb;
+  color: #fff;
+}
+
+.btn-new:hover {
+  background: #007fb6;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filters select {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #d0d3d8;
+  font-size: 14px;
+  background: #fff;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.employee-table th {
+  background: #f0f2f7;
+  font-weight: 700;
+  color: #212145;
+}
+
+.employee-table tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.clickable-row {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clickable-row:hover {
+  background: #f8fafc;
+}
+
+.employee-table button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #e0e7ff;
+  color: #1e3a8a;
+  font-weight: 600;
+}
+
+.employee-table button:hover {
+  background: #c7d2fe;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status-badge.ativo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.afastado {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.desligado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pagination {
+  margin-top: 24px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  min-width: 36px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #e5e7eb;
+}
+
+.pagination button.active {
+  background: #009adb;
+  color: #fff;
+}
+
+.pagination button:hover:not(.active) {
+  background: #d1d5db;
+}
+
+@media (max-width: 768px) {
+  .employee-list-container {
+    padding: 20px;
+  }
+
+  .employee-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

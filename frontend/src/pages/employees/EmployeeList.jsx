@@ -2,6 +2,7 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
+import "../../styles/pages/employees/employeeList.css";
 
 const mockColaboradores = [
   {
