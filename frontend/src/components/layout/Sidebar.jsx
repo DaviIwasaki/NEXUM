@@ -40,6 +40,7 @@ export default function Sidebar() {
       { name: "Cálculo da Folha", path: "/folha-calculo" },
       { name: "Relatórios Fiscais", path: "/relatorios-fiscais" },
       { name: "Meus Benefícios (Aprovações)", path: "/meus-beneficios" },
+      { name: 'Administração de Benefícios', path: '/beneficios/admin' },
     ],
     Gestor: [
       { name: "Dashboard", path: "/dashboard" },
@@ -48,6 +49,7 @@ export default function Sidebar() {
       { name: "Avaliações", path: "/avaliacoes" },
       { name: "Logs", path: "/logs" },
       { name: "Aprovações Pendentes", path: "/aprovacoes-pendentes" },
+      { name: 'Ciclos de Avaliação', path: '/ciclos-avaliacao' },
     ],
     Admin: [
       { name: "Dashboard", path: "/dashboard" },

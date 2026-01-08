@@ -29,6 +29,10 @@ import PayslipIndividual from "./pages/payroll/PayslipIndividual";
 import FiscalReports from "./pages/payroll/FiscalReports";
 import BenefitsCatalog from "./pages/benefits/BenefitsCatalog";
 import MyBenefits from "./pages/benefits/MyBenefits";
+import BenefitsAdmin from "./pages/benefits/BenefitsAdmin";
+import EvaluationCycles from "./pages/evaluations/EvaluationCycles";
+import EvaluationForm from "./pages/performance/EvaluationForm";
+import PDI from "./pages/performance/PDI";
 
 import "./styles/global.css";
 
@@ -277,6 +281,42 @@ function App() {
             element={
               <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
                 <MyBenefits />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/beneficios/admin"
+            element={
+              <ProtectedRoute roles={["RH", "Admin"]}>
+                <BenefitsAdmin />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/ciclos-avaliacao"
+            element={
+              <ProtectedRoute roles={["Gestor", "RH", "Admin"]}>
+                <EvaluationCycles />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/avaliacao/formulario/:cicloId"
+            element={
+              <ProtectedRoute roles={["Gestor", "Colaborador", "RH"]}>
+                <EvaluationForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/pdi"
+            element={
+              <ProtectedRoute roles={["Colaborador", "Gestor", "RH"]}>
+                <PDI />
               </ProtectedRoute>
             }
           />

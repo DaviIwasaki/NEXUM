@@ -104,16 +104,12 @@ export default function PersonProfile() {
       email: user?.email || "joao@empresa.com",
       telefone: "(31) 98765-4321",
       cpf: "123.456.789-00",
-      pretensaoSalarial:
-        user?.role === "Candidato" ? "R$ 8.000,00" : null,
+      pretensaoSalarial: user?.role === "Candidato" ? "R$ 8.000,00" : null,
       cargo: user?.cargo || "Desenvolvedor Frontend Pleno",
       departamento: user?.departamento || "TI",
-      salarioAtual:
-        user?.role === "Colaborador" ? "R$ 10.500,00" : null,
-      admissao:
-        user?.role === "Colaborador" ? "2026-03-01" : null,
-      status:
-        user?.role === "Colaborador" ? "Ativo" : "Candidato",
+      salarioAtual: user?.role === "Colaborador" ? "R$ 10.500,00" : null,
+      admissao: user?.role === "Colaborador" ? "2026-03-01" : null,
+      status: user?.role === "Colaborador" ? "Ativo" : "Candidato",
     };
 
     setPerson(basePerson);
@@ -124,8 +120,7 @@ export default function PersonProfile() {
   const isCandidate =
     user?.role === "Candidato" || person.status === "Candidato";
 
-  const isEmployee =
-    user?.role === "Colaborador" || person.status === "Ativo";
+  const isEmployee = user?.role === "Colaborador" || person.status === "Ativo";
 
   /* ===================== RENDER ===================== */
 
@@ -278,6 +273,7 @@ export default function PersonProfile() {
                 </tbody>
               </table>
             </TabPanel>
+            {isEmployee && <Tab>PDI</Tab>}
           </>
         )}
 
@@ -309,9 +305,7 @@ export default function PersonProfile() {
                 <h4>{evento.evento}</h4>
                 <p>Cargo: {evento.cargo}</p>
                 <p>Salário: {evento.salario}</p>
-                {evento.novoDept && (
-                  <p>Novo Departamento: {evento.novoDept}</p>
-                )}
+                {evento.novoDept && <p>Novo Departamento: {evento.novoDept}</p>}
               </div>
             ))}
           </div>
@@ -331,9 +325,7 @@ export default function PersonProfile() {
 
       {(user?.role === "RH" || user?.role === "Admin") && (
         <button
-          onClick={() =>
-            navigate(`/colaboradores/${person.id}/alteracao`)
-          }
+          onClick={() => navigate(`/colaboradores/${person.id}/alteracao`)}
         >
           Alteração Contratual
         </button>
