@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
+import "../../styles/pages/payroll/payrollCalculation.css";
 
 const mockFolhaMensal = [
   {

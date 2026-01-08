@@ -26,6 +26,7 @@ export default function Sidebar() {
       { name: "Treinamentos", path: "/treinamentos" },
       { name: "Registro de Ponto", path: "/ponto" },
       { name: "Espelho de Ponto", path: "/espelho-ponto" },
+      { name: 'Meu Holerite', path: '/holerite' },
     ],
     RH: [
       { name: "Dashboard", path: "/dashboard" },
@@ -34,6 +35,8 @@ export default function Sidebar() {
       { name: "Colaboradores", path: "/colaboradores" },
       { name: "Logs", path: "/logs" },
       { name: 'Espelho de Ponto (Equipe)', path: '/espelho-ponto' },
+      { name: 'Cálculo da Folha', path: '/folha-calculo' },
+      { name: 'Relatórios Fiscais', path: '/relatorios-fiscais' },
     ],
     Gestor: [
       { name: "Dashboard", path: "/dashboard" },
@@ -41,6 +44,7 @@ export default function Sidebar() {
       { name: "Minha Equipe", path: "/equipe" },
       { name: "Avaliações", path: "/avaliacoes" },
       { name: "Logs", path: "/logs" },
+      { name: 'Aprovações Pendentes', path: '/aprovacoes-pendentes' },
     ],
     Admin: [
       { name: "Dashboard", path: "/dashboard" },

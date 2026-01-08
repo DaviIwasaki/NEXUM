@@ -25,6 +25,10 @@ import TimeClock from "./pages/point/TimeClock";
 import PointMirror from "./pages/point/PointMirror";
 import PendingApprovals from "./pages/point/PendingApprovals";
 import PayrollCalculation from "./pages/payroll/PayrollCalculation";
+import PayslipIndividual from "./pages/payroll/PayslipIndividual";
+import FiscalReports from "./pages/payroll/FiscalReports";
+import BenefitsCatalog from "./pages/benefits/BenefitsCatalog";
+import MyBenefits from "./pages/benefits/MyBenefits";
 
 import "./styles/global.css";
 
@@ -237,6 +241,42 @@ function App() {
             element={
               <ProtectedRoute roles={["RH", "Admin"]}>
                 <PayrollCalculation />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/holerite"
+            element={
+              <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
+                <PayslipIndividual />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/relatorios-fiscais"
+            element={
+              <ProtectedRoute roles={["RH", "Admin"]}>
+                <FiscalReports />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/beneficios/catalogo"
+            element={
+              <ProtectedRoute roles={["Colaborador"]}>
+                <BenefitsCatalog />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/meus-beneficios"
+            element={
+              <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
+                <MyBenefits />
               </ProtectedRoute>
             }
           />
