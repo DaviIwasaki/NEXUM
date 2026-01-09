@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
+import "../../styles/pages/performance/evaluationForm.css";
 
 const competencias = [
   { id: 1, nome: "Comunicação", peso: 20 },

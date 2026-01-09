@@ -1,0 +1,240 @@
+.health-request-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", sans-serif;
+  color: #1f2937;
+}
+
+/* Header */
+.health-request-container .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.health-request-container h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.health-request-container .header p {
+  font-size: 14px;
+  color: #4b5563;
+  margin-left: 12px;
+}
+
+.btn-new {
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 13px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn-new:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+/* Table */
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+}
+
+.health-table thead {
+  background: #f1f5f9;
+}
+
+.health-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 800;
+  color: #374151;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.health-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.health-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Status badge */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  display: inline-block;
+}
+
+.status-badge.aprovado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.pendente {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-badge.rejeitado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Action buttons */
+.btn-approve,
+.btn-reject {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.btn-approve {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.btn-reject {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.btn-approve:hover,
+.btn-reject:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 22px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+}
+
+.modal-box h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+/* Form */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* Modal actions */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.modal-actions button {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.modal-actions button:first-child {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.modal-actions .btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .health-request-container {
+    padding: 20px;
+  }
+
+  .health-request-container .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .health-table {
+    font-size: 13px;
+  }
+
+  .modal-box {
+    padding: 22px;
+  }
+}
+@media (max-width: 480px) {
+  .health-request-container {
+    padding: 16px;
+  }
+
+  .btn-new {
+    width: 100%;
+    text-align: center;
+  }
+}

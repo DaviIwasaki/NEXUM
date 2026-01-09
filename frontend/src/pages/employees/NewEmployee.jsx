@@ -20,9 +20,7 @@ export default function NewEmployee() {
     departamento: "",
     salario: "",
     dataAdmissao: "",
-    dependentes: [
-      { nome: "", parentesco: "", dataNascimento: "" },
-    ],
+    dependentes: [{ nome: "", parentesco: "", dataNascimento: "" }],
   };
 
   const validationSchema = Yup.object({
@@ -34,7 +32,9 @@ export default function NewEmployee() {
     telefone: Yup.string().required("Telefone obrigatório"),
     cargo: Yup.string().required("Cargo obrigatório"),
     departamento: Yup.string().required("Departamento obrigatório"),
-    salario: Yup.number().min(0, "Salário deve ser positivo").required("Salário obrigatório"),
+    salario: Yup.number()
+      .min(0, "Salário deve ser positivo")
+      .required("Salário obrigatório"),
     dataAdmissao: Yup.date().required("Data de admissão obrigatória"),
   });
 
@@ -87,12 +87,20 @@ export default function NewEmployee() {
                 <div className="form-group">
                   <label>Nome Completo *</label>
                   <Field name="nome" placeholder="João Silva" />
-                  <ErrorMessage name="nome" component="span" className="error" />
+                  <ErrorMessage
+                    name="nome"
+                    component="span"
+                    className="error"
+                  />
                 </div>
                 <div className="form-group">
                   <label>E-mail *</label>
                   <Field name="email" type="email" />
-                  <ErrorMessage name="email" component="span" className="error" />
+                  <ErrorMessage
+                    name="email"
+                    component="span"
+                    className="error"
+                  />
                 </div>
                 <div className="form-group">
                   <label>CPF *</label>
@@ -102,7 +110,39 @@ export default function NewEmployee() {
                 <div className="form-group">
                   <label>Telefone *</label>
                   <Field name="telefone" placeholder="(31) 99999-9999" />
-                  <ErrorMessage name="telefone" component="span" className="error" />
+                  <ErrorMessage
+                    name="telefone"
+                    component="span"
+                    className="error"
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Endereço Completo *</label>
+                  <Field
+                    name="endereco"
+                    as="textarea"
+                    rows="3"
+                    placeholder="Rua, número, bairro, cidade - UF"
+                  />
+                  <ErrorMessage
+                    name="endereco"
+                    component="span"
+                    className="error"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Comprovante de Endereço *</label>
+                  <input
+                    type="file"
+                    accept=".pdf,.jpg"
+                    onChange={(e) =>
+                      setFieldValue("comprovanteEndereco", e.target.files[0])
+                    }
+                  />
+                  <small>
+                    Ex: conta de luz, água ou contrato de aluguel (obrigatório).
+                  </small>
                 </div>
               </div>
             </div>
@@ -114,7 +154,11 @@ export default function NewEmployee() {
                 <div className="form-group">
                   <label>Cargo *</label>
                   <Field name="cargo" placeholder="Desenvolvedor Frontend" />
-                  <ErrorMessage name="cargo" component="span" className="error" />
+                  <ErrorMessage
+                    name="cargo"
+                    component="span"
+                    className="error"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Departamento *</label>
@@ -126,17 +170,29 @@ export default function NewEmployee() {
                     <option value="Produto">Produto</option>
                     <option value="Design">Design</option>
                   </Field>
-                  <ErrorMessage name="departamento" component="span" className="error" />
+                  <ErrorMessage
+                    name="departamento"
+                    component="span"
+                    className="error"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Salário (R$) *</label>
                   <Field name="salario" type="number" min="0" step="0.01" />
-                  <ErrorMessage name="salario" component="span" className="error" />
+                  <ErrorMessage
+                    name="salario"
+                    component="span"
+                    className="error"
+                  />
                 </div>
                 <div className="form-group">
                   <label>Data de Admissão *</label>
                   <Field name="dataAdmissao" type="date" />
-                  <ErrorMessage name="dataAdmissao" component="span" className="error" />
+                  <ErrorMessage
+                    name="dataAdmissao"
+                    component="span"
+                    className="error"
+                  />
                 </div>
               </div>
             </div>
@@ -153,7 +209,10 @@ export default function NewEmployee() {
                     </div>
                     <div className="form-group">
                       <label>Parentesco</label>
-                      <Field as="select" name={`dependentes[${index}].parentesco`}>
+                      <Field
+                        as="select"
+                        name={`dependentes[${index}].parentesco`}
+                      >
                         <option value="">Selecione</option>
                         <option value="Cônjuge">Cônjuge</option>
                         <option value="Filho(a)">Filho(a)</option>
@@ -162,14 +221,19 @@ export default function NewEmployee() {
                     </div>
                     <div className="form-group">
                       <label>Data de Nascimento</label>
-                      <Field name={`dependentes[${index}].dataNascimento`} type="date" />
+                      <Field
+                        name={`dependentes[${index}].dataNascimento`}
+                        type="date"
+                      />
                     </div>
                   </div>
                   {values.dependentes.length > 1 && (
                     <button
                       type="button"
                       className="remove-dependente"
-                      onClick={() => removeDependente(index, values, setFieldValue)}
+                      onClick={() =>
+                        removeDependente(index, values, setFieldValue)
+                      }
                     >
                       Remover
                     </button>

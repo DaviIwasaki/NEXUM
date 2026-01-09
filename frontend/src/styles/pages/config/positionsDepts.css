@@ -1,0 +1,130 @@
+.positions-depts-container {
+  padding: 32px;
+  min-height: calc(100vh - 76px);
+  background: #f4f6fa;
+  font-family: "Inter", sans-serif;
+  color: #1f2937;
+}
+
+/* Header */
+.positions-depts-container h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.positions-depts-container > p {
+  margin-top: 6px;
+  margin-bottom: 28px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+/* Sections */
+.section-cargos,
+.section-depts {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 22px;
+  margin-bottom: 32px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.section-cargos h2,
+.section-depts h2 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+/* New form */
+.form-new {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr auto;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section-depts .form-new {
+  grid-template-columns: 2fr 2fr auto;
+}
+
+.form-new input,
+.form-new select {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  background: #ffffff;
+}
+
+.form-new input:focus,
+.form-new select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* Buttons */
+.form-new button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.form-new button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* Tables */
+.section-cargos table,
+.section-depts table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.section-cargos thead,
+.section-depts thead {
+  background: #f1f5f9;
+}
+
+.section-cargos th,
+.section-depts th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 800;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.section-cargos td,
+.section-depts td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-cargos tbody tr:hover,
+.section-depts tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .form-new {
+    grid-template-columns: 1fr;
+  }
+
+  .form-new button {
+    width: 100%;
+  }
+}
+@media (max-width: 480px) {
+  .positions-depts-container {
+    padding: 16px;
+  }
+}

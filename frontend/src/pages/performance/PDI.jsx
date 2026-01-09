@@ -2,6 +2,7 @@
 import React from "react";
 import { useAuth } from "../../store/AuthStore";
 import { useNavigate } from "react-router-dom";
+import "../../styles/pages/performance/pdi.css";
 
 const mockPDI = [
   {

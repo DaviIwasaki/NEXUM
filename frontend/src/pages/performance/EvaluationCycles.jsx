@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
 import { Navigate } from "react-router-dom";
+import "../../styles/pages/performance/evaluationCycles.css";
 
 const mockCiclos = [
   {

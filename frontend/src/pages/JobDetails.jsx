@@ -102,7 +102,7 @@ const JobDetails = () => {
 
         {/* Ações por papel */}
         <div className="job-actions">
-          {user?.role === "RH" && (
+          {(user?.role === "RH" || user?.role === "Gestor") && (
             <>
               <button
                 className="btn btn-secondary"
@@ -110,7 +110,12 @@ const JobDetails = () => {
               >
                 Editar Vaga
               </button>
-              {/* ... */}
+              <button
+                className="btn btn-primary"
+                onClick={handleViewCandidates}
+              >
+                Ver Candidatos
+              </button>
             </>
           )}
 
@@ -120,12 +125,6 @@ const JobDetails = () => {
               onClick={() => setApplyModalOpen(true)}
             >
               Aplicar para a vaga
-            </button>
-          )}
-
-          {user?.role === "Gestor" && (
-            <button className="btn btn-primary" onClick={handleViewCandidates}>
-              Ver Candidatos da Vaga
             </button>
           )}
         </div>

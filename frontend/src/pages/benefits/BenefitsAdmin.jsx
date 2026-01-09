@@ -4,6 +4,7 @@ import { useAuth } from "../../store/AuthStore";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import "../../styles/pages/benefits/benefitsAdmin.css";
 
 const mockBeneficiosCadastrados = [
   {

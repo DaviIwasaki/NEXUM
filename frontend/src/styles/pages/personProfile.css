@@ -39,7 +39,7 @@
   color: #212145;
 }
 
-.status-badge {
+.person-profile-container .status-badge {
   padding: 6px 14px;
   border-radius: 16px;
   font-size: 13px;
@@ -245,6 +245,112 @@ td button {
   color: white;
   font-weight: 600;
   cursor: pointer;
+}
+
+/* ===================== ACTIVITY TAB ===================== */
+
+.activity-timeline {
+  position: relative;
+  margin-top: 24px;
+  padding-left: 28px;
+}
+
+/* Linha vertical da timeline */
+.activity-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 2px;
+  height: 100%;
+  background: #dcdfe6;
+}
+
+/* ===================== ITEM ===================== */
+
+.activity-item {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+/* Marcador (bolinha da timeline) */
+.activity-item::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: #1565c0;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #e3f2fd;
+}
+
+/* ===================== DATE ===================== */
+
+.activity-date {
+  min-width: 90px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6f7285;
+  text-align: right;
+  padding-top: 2px;
+}
+
+/* ===================== CONTENT ===================== */
+
+.activity-content {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  flex: 1;
+}
+
+.activity-content strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: #212145;
+  margin-bottom: 4px;
+}
+
+.activity-content p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* ===================== SMALL BUTTON ===================== */
+
+.btn-small {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  background: #f0f3f9;
+  color: #1565c0;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-small:hover {
+  background: #e3f2fd;
+}
+
+/* ===================== EMPTY STATE ===================== */
+
+.empty-message {
+  margin-top: 24px;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #6f7285;
+  background: #f6f6f8;
+  border-radius: 10px;
 }
 
 /* =========================================================

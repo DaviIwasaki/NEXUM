@@ -14,82 +14,141 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simula fetch de dados da API com delay
     const fetchDashboardData = async () => {
       setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 800)); // simula latência de API
 
-      // Dados simulados dinâmicos por role
-      await new Promise(resolve => setTimeout(resolve, 800)); // simula latência
-
-      const baseMetrics = {
+      const baseData = {
         Candidato: {
           greeting: `Bem-vindo de volta, ${user?.nome?.split(' ')[0] || 'Candidato'}!`,
-          candidaturas: [
-            { vaga: "Desenvolvedor Frontend", status: "Entrevista Técnica", data: "07/01/2026" },
-            { vaga: "Analista de Dados", status: "Em análise", data: "05/01/2026" },
-            { vaga: "UX Designer", status: "Triagem", data: "03/01/2026" },
+          cards: [
+            { label: "Candidaturas Ativas", value: "3" },
+            { label: "Status Atual", value: "Em processo seletivo" },
+            { label: "Próximo Prazo", value: "Entrevista em 3 dias" },
           ],
-          chartTitle: "Progresso das suas candidaturas",
+          actions: [
+            { label: "Ver Vagas Disponíveis", path: "/vagas" },
+            { label: "Meu Perfil", path: "/perfil" },
+          ],
+          chartTitle: "Progresso das Minhas Candidaturas",
           chartData: [
-            { mes: "Out", candidaturas: 2 },
-            { mes: "Nov", candidaturas: 4 },
-            { mes: "Dez", candidaturas: 3 },
-            { mes: "Jan", candidaturas: 5 },
+            { mes: "Out/25", candidaturas: 1 },
+            { mes: "Nov/25", candidaturas: 3 },
+            { mes: "Dez/25", candidaturas: 5 },
+            { mes: "Jan/26", candidaturas: 4 },
+          ],
+        },
+        Colaborador: {
+          greeting: `Olá, ${user?.nome?.split(' ')[0] || 'Colaborador'}!`,
+          cards: [
+            { label: "Banco de Horas Atual", value: "+05:30h" },
+            { label: "Próxima Avaliação", value: "Semestral 2/2026" },
+            { label: "Treinamentos Pendentes", value: "2" },
+            { label: "Solicitações de Saúde", value: "1 pendente" },
+          ],
+          actions: [
+            { label: "Registrar Ponto", path: "/ponto" },
+            { label: "Ver Espelho de Ponto", path: "/espelho-ponto" },
+            { label: "Meus Benefícios", path: "/meus-beneficios" },
+            { label: "Meu PDI", path: "/pdi" },
+            { label: "Solicitar Saúde", path: "/saude/solicitacoes" },
+          ],
+          chartTitle: "Evolução do Banco de Horas (últimos 4 meses)",
+          chartData: [
+            { mes: "Out/25", horas: 2 },
+            { mes: "Nov/25", horas: 5 },
+            { mes: "Dez/25", horas: 8 },
+            { mes: "Jan/26", horas: 5.5 },
           ],
         },
         RH: {
           greeting: "Painel de Recursos Humanos",
-          metrics: {
-            vagasAbertas: 7,
-            candidatosAtivos: 58,
-            processosEmAndamento: 5,
-            contrataçõesMes: 3,
-          },
-          chartTitle: "Candidatos por etapa (vaga média)",
+          cards: [
+            { label: "Vagas Abertas", value: "7" },
+            { label: "Candidatos Ativos", value: "58" },
+            { label: "Processos em Andamento", value: "5" },
+            { label: "Contratações no Mês", value: "3" },
+          ],
+          actions: [
+            { label: "Criar Nova Vaga", path: "/vagas/nova" },
+            { label: "Ver Colaboradores", path: "/colaboradores" },
+            { label: "Cálculo da Folha", path: "/folha-calculo" },
+            { label: "Relatórios Fiscais", path: "/relatorios-fiscais" },
+          ],
+          chartTitle: "Candidatos por Etapa (média das vagas)",
           chartData: [
             { etapa: "Triagem", candidatos: 22 },
             { etapa: "Entrevista RH", candidatos: 15 },
             { etapa: "Teste Técnico", candidatos: 12 },
             { etapa: "Entrevista Final", candidatos: 6 },
-            { etapa: "Oferta", candidatos: 3 },
           ],
         },
         Gestor: {
           greeting: "Painel do Gestor",
-          metrics: {
-            vagasDaArea: 4,
-            candidatosParaAvaliar: 18,
-            entrevistasPendentes: 8,
-            aprovadosMes: 4,
-          },
-          chartTitle: "Aprovações por mês",
+          cards: [
+            { label: "Vagas da Área", value: "4" },
+            { label: "Candidatos para Avaliar", value: "18" },
+            { label: "Entrevistas Pendentes", value: "8" },
+            { label: "Aprovações de Saúde Pendentes", value: "2" },
+          ],
+          actions: [
+            { label: "Aprovações Pendentes", path: "/aprovacoes-pendentes" },
+            { label: "Ciclos de Avaliação", path: "/ciclos-avaliacao" },
+            { label: "Minha Equipe", path: "/colaboradores" },
+          ],
+          chartTitle: "Aprovações por Mês",
           chartData: [
-            { mes: "Out", aprovados: 2 },
-            { mes: "Nov", aprovados: 5 },
-            { mes: "Dez", aprovados: 3 },
-            { mes: "Jan", aprovados: 6 },
+            { mes: "Out/25", aprovados: 2 },
+            { mes: "Nov/25", aprovados: 5 },
+            { mes: "Dez/25", aprovados: 3 },
+            { mes: "Jan/26", aprovados: 6 },
           ],
         },
         Admin: {
           greeting: "Painel Administrativo",
-          metrics: {
-            empresasCadastradas: 18,
-            usuariosTotais: 342,
-            vagasAtivas: 42,
-            logsUltimas24h: 156,
-          },
-          chartTitle: "Crescimento de usuários",
+          cards: [
+            { label: "Empresas Cadastradas", value: "18" },
+            { label: "Usuários Totais", value: "342" },
+            { label: "Vagas Ativas", value: "42" },
+            { label: "Logs Últimas 24h", value: "156" },
+          ],
+          actions: [
+            { label: "Nova Empresa", path: "/empresas/nova" },
+            { label: "Usuários e Permissões", path: "/config/usuarios" },
+            { label: "Cargos e Departamentos", path: "/config/cargos-departamentos" },
+          ],
+          chartTitle: "Crescimento de Usuários (mensal)",
           chartData: [
-            { mes: "Set", usuarios: 280 },
-            { mes: "Out", usuarios: 295 },
-            { mes: "Nov", usuarios: 315 },
-            { mes: "Dez", usuarios: 330 },
-            { mes: "Jan", usuarios: 342 },
+            { mes: "Set/25", usuarios: 280 },
+            { mes: "Out/25", usuarios: 295 },
+            { mes: "Nov/25", usuarios: 315 },
+            { mes: "Dez/25", usuarios: 330 },
+            { mes: "Jan/26", usuarios: 342 },
+          ],
+        },
+        Auditor: {
+          greeting: "Painel de Auditoria",
+          cards: [
+            { label: "Logs Processados Últimas 24h", value: "156" },
+            { label: "Consentimentos LGPD Pendentes", value: "4" },
+            { label: "Acessos Suspeitos Detectados", value: "2" },
+            { label: "Relatórios de Compliance Gerados", value: "8" },
+          ],
+          actions: [
+            { label: "Ver Logs Completos", path: "/logs" },
+            { label: "Relatórios Compliance", path: "/relatorios/compliance" },
+          ],
+          chartTitle: "Evolução de Acessos a Dados Pessoais",
+          chartData: [
+            { mes: "Out/25", acessos: 120 },
+            { mes: "Nov/25", acessos: 145 },
+            { mes: "Dez/25", acessos: 180 },
+            { mes: "Jan/26", acessos: 210 },
           ],
         },
       };
 
-      const roleData = baseMetrics[user?.role] || baseMetrics.Candidato;
+      const roleData = baseData[user?.role] || baseData.Candidato;
       setMetrics(roleData);
       setChartData(roleData.chartData);
       setLoading(false);
@@ -99,7 +158,7 @@ export default function Dashboard() {
   }, [user]);
 
   if (loading) {
-    return <div className="dashboard-loading">Carregando seus dados...</div>;
+    return <div className="dashboard-loading">Carregando seu painel...</div>;
   }
 
   if (!metrics) return null;
@@ -113,81 +172,66 @@ export default function Dashboard() {
         </p>
       </section>
 
-      {/* Métricas em cards */}
-      {metrics.metrics && (
+      {/* Cards de métricas - sempre presentes */}
+      {metrics.cards && (
         <section className="dashboard-cards">
-          {Object.entries(metrics.metrics).map(([key, value]) => (
-            <div key={key} className="dashboard-card">
-              <span className="card-label">
-                {key
-                  .replace(/([A-Z])/g, " $1")
-                  .replace(/^./, str => str.toUpperCase())}
-              </span>
-              <strong className="card-value">{value}</strong>
+          {metrics.cards.map((card, idx) => (
+            <div key={idx} className="dashboard-card">
+              <span className="card-label">{card.label}</span>
+              <strong className="card-value">{card.value}</strong>
             </div>
           ))}
         </section>
       )}
 
-      {/* Gráfico dinâmico */}
-      <section className="dashboard-chart">
-        <h2>{metrics.chartTitle}</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          {user?.role === "Candidato" || user?.role === "Gestor" || user?.role === "Admin" ? (
-            <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={user?.role === "RH" ? "etapa" : "mes"} />
-              <YAxis />
-              <Tooltip />
-              <Line type="monotone" dataKey={user?.role === "RH" ? "candidatos" : user?.role === "Gestor" ? "aprovados" : "usuarios"} stroke="#212145" strokeWidth={3} />
-            </LineChart>
-          ) : (
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="etapa" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="candidatos" fill="#009ADB" />
-            </BarChart>
-          )}
-        </ResponsiveContainer>
-      </section>
-
-      {/* Área específica por papel */}
-      {user?.role === "Candidato" && metrics.candidaturas && (
-        <section className="dashboard-section">
-          <h2>Minhas Candidaturas Recentes</h2>
-          <div className="dashboard-list">
-            {metrics.candidaturas.map((c, idx) => (
-              <div key={idx} className="dashboard-list-card">
-                <div>
-                  <strong>{c.vaga}</strong>
-                  <p>{c.data}</p>
-                </div>
-                <span className={`status ${c.status.toLowerCase().replace(' ', '-')}`}>
-                  {c.status}
-                </span>
-              </div>
-            ))}
-          </div>
+      {/* Gráfico - sempre com dados */}
+      {chartData.length > 0 && (
+        <section className="dashboard-chart">
+          <h2>{metrics.chartTitle}</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            {user?.role === "RH" || user?.role === "Gestor" ? (
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="mes" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey={user?.role === "RH" ? "candidatos" : "aprovados"} fill="#009ADB" />
+              </BarChart>
+            ) : user?.role === "Auditor" ? (
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="mes" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="acessos" fill="#ff4d4f" />
+              </BarChart>
+            ) : (
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="mes" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey={user?.role === "Colaborador" ? "horas" : "candidaturas"} stroke="#212145" strokeWidth={3} />
+              </LineChart>
+            )}
+          </ResponsiveContainer>
         </section>
       )}
 
-      {(user?.role === "RH" || user?.role === "Gestor") && (
+      {/* Ações rápidas - sempre presentes e relevantes */}
+      {metrics.actions && (
         <section className="dashboard-section">
           <h2>Ações Rápidas</h2>
           <div className="dashboard-actions">
-            {user?.role === "RH" && (
-              <button className="action-btn" onClick={() => navigate("/vagas/nova")}>
-                Criar Nova Vaga
+            {metrics.actions.map((action, idx) => (
+              <button 
+                key={idx} 
+                className="action-btn" 
+                onClick={() => navigate(action.path)}
+              >
+                {action.label}
               </button>
-            )}
-            <button className="action-btn secondary" onClick={() => navigate("/vagas")}>
-              Ver Todas as Vagas
-            </button>
-            <button className="action-btn secondary" onClick={() => navigate("/logs")}>
-              Ver Logs de Auditoria
-            </button>
+            ))}
           </div>
         </section>
       )}

@@ -9,9 +9,7 @@ import { useAuth } from "../store/AuthStore";
 import "../styles/pages/register.css";
 import * as pdfjsLib from "pdfjs-dist";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export default function Register() {
   const [curriculo, setCurriculo] = useState(null);
@@ -25,6 +23,7 @@ export default function Register() {
     nome: "",
     cpf: "",
     telefone: "",
+    endereco: "", // NOVO: Endereço completo
     pretensaoSalarial: "",
     consentimento: false,
   };
@@ -44,6 +43,7 @@ export default function Register() {
       )
       .required("CPF obrigatório"),
     telefone: Yup.string().required("Telefone obrigatório"),
+    endereco: Yup.string().required("Endereço obrigatório"), // NOVO: Obrigatório
     pretensaoSalarial: Yup.string(),
     consentimento: Yup.boolean().oneOf([true], "Você deve aceitar os termos"),
   });
@@ -53,15 +53,32 @@ export default function Register() {
       // Limpa formatação do CPF
       const cpfLimpo = values.cpf.replace(/\D/g, "");
 
+      let textoExtraido = null;
       if (curriculo) {
-        const arrayBuffer = await curriculo.arrayBuffer();
-        const pdfData = await pdfjsLib(arrayBuffer);
-        const textoExtraido = pdfData.text.substring(0, 500); // limite para preview
-        novoUsuario.curriculoTexto = textoExtraido;
-        console.log("Texto extraído do currículo:", textoExtraido);
+        try {
+          const arrayBuffer = await curriculo.arrayBuffer();
+          const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+          const pdf = await loadingTask.promise;
+          let fullText = "";
+          for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items
+              .map((item) => item.str)
+              .join(" ");
+            fullText += pageText + " ";
+          }
+          textoExtraido = fullText.substring(0, 1000); // limite para preview
+          console.log("Texto extraído do currículo:", textoExtraido);
+        } catch (err) {
+          console.error("Erro ao extrair texto do PDF:", err);
+          toast.warning(
+            "Não foi possível ler o currículo. Cadastro continua sem preview."
+          );
+        }
       }
 
-      // Mock de criação de usuário (depois será POST /usuarios + upload currículo)
+      // Mock de criação de usuário
       const novoUsuario = {
         id: Date.now(), // ID temporário
         nome: values.nome,
@@ -69,8 +86,10 @@ export default function Register() {
         role: "Candidato",
         cpf: cpfLimpo,
         telefone: values.telefone,
+        endereco: values.endereco, // NOVO: Salva endereço
         pretensaoSalarial: values.pretensaoSalarial,
         curriculo: curriculo ? curriculo.name : null,
+        curriculoTexto: textoExtraido,
       };
 
       console.log("Candidato cadastrado:", novoUsuario);
@@ -78,10 +97,10 @@ export default function Register() {
 
       toast.success("Conta criada com sucesso! Bem-vindo ao NEXUM.");
 
-      // Faz login automático após cadastro
+      // Login automático
       login(novoUsuario, "fake-token-candidato");
 
-      // Redireciona para dashboard
+      // Redireciona
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
@@ -149,58 +168,76 @@ export default function Register() {
 
                 <section>
                   <h3>Dados Pessoais</h3>
-                  <div className="form-group">
-                    <label>Nome Completo *</label>
-                    <Field name="nome" placeholder="João Silva" />
-                    <ErrorMessage
-                      name="nome"
-                      component="span"
-                      className="error"
-                    />
-                  </div>
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label>Nome Completo *</label>
+                      <Field name="nome" placeholder="João Silva" />
+                      <ErrorMessage
+                        name="nome"
+                        component="span"
+                        className="error"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label>CPF *</label>
-                    <Field
-                      name="cpf"
-                      placeholder="999.999.999-99"
-                      onChange={(e) => {
-                        let value = e.target.value.replace(/\D/g, "");
-                        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-                        value = value.replace(/(\d{3})(\d)/, "$1.$2");
-                        value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-                        setFieldValue("cpf", value);
-                      }}
-                    />
-                    <ErrorMessage
-                      name="cpf"
-                      component="span"
-                      className="error"
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label>CPF *</label>
+                      <Field
+                        name="cpf"
+                        placeholder="999.999.999-99"
+                        onChange={(e) => {
+                          let value = e.target.value.replace(/\D/g, "");
+                          value = value.replace(/(\d{3})(\d)/, "$1.$2");
+                          value = value.replace(/(\d{3})(\d)/, "$1.$2");
+                          value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+                          setFieldValue("cpf", value);
+                        }}
+                      />
+                      <ErrorMessage
+                        name="cpf"
+                        component="span"
+                        className="error"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label>Telefone *</label>
-                    <Field
-                      name="telefone"
-                      placeholder="(99) 99999-9999"
-                      onChange={(e) => {
-                        let value = e.target.value.replace(/\D/g, "");
-                        value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
-                        value = value.replace(/(\d{5})(\d)/, "$1-$2");
-                        setFieldValue("telefone", value);
-                      }}
-                    />
-                    <ErrorMessage
-                      name="telefone"
-                      component="span"
-                      className="error"
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label>Telefone *</label>
+                      <Field
+                        name="telefone"
+                        placeholder="(99) 99999-9999"
+                        onChange={(e) => {
+                          let value = e.target.value.replace(/\D/g, "");
+                          value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+                          value = value.replace(/(\d{5})(\d)/, "$1-$2");
+                          setFieldValue("telefone", value);
+                        }}
+                      />
+                      <ErrorMessage
+                        name="telefone"
+                        component="span"
+                        className="error"
+                      />
+                    </div>
 
-                  <div className="form-group">
-                    <label>Pretensão Salarial (opcional)</label>
-                    <Field name="pretensaoSalarial" placeholder="R$ 5.000,00" />
+                    <div className="form-group">
+                      <label>Pretensão Salarial (opcional)</label>
+                      <Field
+                        name="pretensaoSalarial"
+                        placeholder="R$ 5.000,00"
+                      />
+                    </div>
+
+                    <div className="form-group full-width">
+                      <label>Endereço Completo *</label>
+                      <Field
+                        name="endereco"
+                        placeholder="Rua das Flores, 123 - Bairro Centro - Belo Horizonte/MG"
+                      />
+                      <ErrorMessage
+                        name="endereco"
+                        component="span"
+                        className="error"
+                      />
+                    </div>
                   </div>
                 </section>
 

@@ -17,49 +17,64 @@ export default function Sidebar() {
       { name: "Meu Perfil", path: "/perfil" },
     ],
     Colaborador: [
-      // NOVO MENU
       { name: "Dashboard", path: "/dashboard" },
       { name: "Meu Perfil", path: "/perfil" },
-      { name: "Meu Ponto", path: "/ponto" },
-      { name: "Meus Benefícios", path: "/beneficios" },
-      { name: "Minhas Avaliações", path: "/avaliacoes" },
-      { name: "Treinamentos", path: "/treinamentos" },
+      // Ponto
       { name: "Registro de Ponto", path: "/ponto" },
       { name: "Espelho de Ponto", path: "/espelho-ponto" },
-      { name: "Meu Holerite", path: "/holerite" },
+      // Benefícios
       { name: "Catálogo de Benefícios", path: "/beneficios/catalogo" },
       { name: "Meus Benefícios", path: "/meus-beneficios" },
+      // Folha
+      { name: "Meu Holerite", path: "/holerite" },
+      // Treinamento
+      { name: "Trilhas de Aprendizagem", path: "/trilhas-aprendizagem" },
+      { name: "Histórico de Treinamentos", path: "/historico-treinamentos" },
+      // Saúde
+      { name: "Solicitações de Saúde", path: "/saude/solicitacoes" },
     ],
     RH: [
       { name: "Dashboard", path: "/dashboard" },
+      // Recrutamento
       { name: "Vagas", path: "/vagas" },
       { name: "Criar Vaga", path: "/vagas/nova" },
       { name: "Colaboradores", path: "/colaboradores" },
-      { name: "Logs", path: "/logs" },
+      // Ponto e Folha
       { name: "Espelho de Ponto (Equipe)", path: "/espelho-ponto" },
       { name: "Cálculo da Folha", path: "/folha-calculo" },
       { name: "Relatórios Fiscais", path: "/relatorios-fiscais" },
-      { name: "Meus Benefícios (Aprovações)", path: "/meus-beneficios" },
-      { name: 'Administração de Benefícios', path: '/beneficios/admin' },
+      // Benefícios
+      { name: "Administração de Benefícios", path: "/beneficios/admin" },
+      { name: "Aprovações de Benefícios", path: "/meus-beneficios" },
+      // Treinamento
+      { name: "Administração T&D", path: "/treinamentos/admin" },
+      { name: "Histórico de Treinamentos", path: "/historico-treinamentos" },
+      // Relatórios
+      { name: "Relatórios Compliance", path: "/relatorios/compliance" },
+      { name: "Relatórios Estratégicos", path: "/relatorios/estrategicos" },
+      // Auditoria
+      { name: "Logs", path: "/logs" },
     ],
     Gestor: [
       { name: "Dashboard", path: "/dashboard" },
       { name: "Vagas", path: "/vagas" },
-      { name: "Minha Equipe", path: "/equipe" },
-      { name: "Avaliações", path: "/avaliacoes" },
-      { name: "Logs", path: "/logs" },
+      { name: "Minha Equipe", path: "/colaboradores" },
       { name: "Aprovações Pendentes", path: "/aprovacoes-pendentes" },
-      { name: 'Ciclos de Avaliação', path: '/ciclos-avaliacao' },
+      { name: "Ciclos de Avaliação", path: "/ciclos-avaliacao" },
+      { name: "Aprovações de Saúde", path: "/saude/solicitacoes" },
+      { name: "Relatórios Estratégicos", path: "/relatorios/estrategicos" },
+      { name: "Logs", path: "/logs" },
     ],
     Admin: [
       { name: "Dashboard", path: "/dashboard" },
       { name: "Nova Empresa", path: "/empresas/nova" },
-      { name: "Usuários", path: "/usuarios" },
-      { name: "Configurações", path: "/configuracoes" },
+      { name: "Usuários e Permissões", path: "/config/usuarios" },
+      { name: "Cargos e Departamentos", path: "/config/cargos-departamentos" },
+      { name: "Relatórios Compliance", path: "/relatorios/compliance" },
+      { name: "Relatórios Estratégicos", path: "/relatorios/estrategicos" },
       { name: "Logs", path: "/logs" },
     ],
     Auditor: [
-      // NOVO MENU READ-ONLY
       { name: "Dashboard", path: "/dashboard" },
       { name: "Logs de Auditoria", path: "/logs" },
       { name: "Relatórios Compliance", path: "/relatorios/compliance" },
@@ -84,7 +99,7 @@ export default function Sidebar() {
         {itensDoMenu.map((item) => (
           <NavLink
             to={item.path}
-            key={item.name}
+            key={item.path} // usei path como key para evitar duplicatas
             className={({ isActive }) =>
               isActive ? "menu-item active" : "menu-item"
             }
@@ -94,11 +109,6 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="sidebar-footer">
-        <button onClick={logout} className="btn-logout">
-          Sair
-        </button>
-      </div>
     </aside>
   );
 }

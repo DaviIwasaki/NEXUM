@@ -1,83 +1,132 @@
-.candidate-details-page {
-  padding: 32px;
-  background: #f4f6fa;
+/* ===================== VARIABLES ===================== */
+:root {
+  --bg-page: #f4f6fa;
+  --bg-card: #ffffff;
+  --bg-muted: #f6f6f8;
+
+  --color-primary: #212145;
+  --color-secondary: #1565c0;
+  --color-link: #009adb;
+
+  --color-success: #2e7d32;
+  --color-danger: #c62828;
+  --color-warning: #f9a825;
+
+  --text-muted: #6f7285;
+  --border-default: #dcdfe6;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --shadow-card: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Header */
+/* ===================== PAGE ===================== */
+.candidate-details-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: var(--bg-page);
+}
+
+/* ===================== HEADER ===================== */
 .candidate-header {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 28px;
 }
 
 .back-btn {
   background: none;
   border: none;
+  padding: 0;
   font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
   cursor: pointer;
-  color: #212145;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
 }
 
 .candidate-header h1 {
   font-size: 26px;
   font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: 4px;
 }
 
 .stage-badge {
   display: inline-block;
-  margin-top: 4px;
-  padding: 4px 10px;
-  border-radius: 12px;
-  background: #e3f2fd;
-  color: #1565c0;
+  padding: 4px 12px;
+  border-radius: 999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  background: #e3f2fd;
+  color: var(--color-secondary);
 }
 
-/* Grid */
+/* ===================== GRID ===================== */
 .candidate-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
 }
 
+/* Desktop layout correto */
 @media (min-width: 1024px) {
   .candidate-grid {
     grid-template-columns: 1fr 2fr;
+    align-items: start;
+  }
+
+  /* Currículo vira o bloco dominante da direita */
+  .resume-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  /* Dados Pessoais em cima à esquerda */
+  .candidate-grid > .card:not(.resume-card):not(.evaluation-card) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  /* Avaliação abaixo dos dados */
+  .evaluation-card {
+    grid-column: 1;
+    grid-row: 2;
   }
 }
 
-/* Cards */
-.card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
-
-.card h2 {
-  margin-bottom: 12px;
-  color: #212145;
-}
-
-/* Info */
+/* ===================== INFO ===================== */
 .info-row {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .info-row span {
+  display: block;
   font-size: 12px;
-  color: #777;
+  color: var(--text-muted);
+  margin-bottom: 2px;
 }
 
 .info-row p {
+  font-size: 14px;
   font-weight: 600;
+  color: var(--color-primary);
 }
 
-/* Currículo */
+/* ===================== RESUME ===================== */
 .resume-card {
-  grid-column: span 2;
+  grid-column: 1;
+}
+
+@media (min-width: 1024px) {
+  .resume-card {
+    grid-column: span 2;
+  }
 }
 
 .resume-header {
@@ -87,58 +136,167 @@
 }
 
 .download-link {
-  color: #009adb;
-  font-weight: 600;
   font-size: 14px;
+  font-weight: 600;
+  color: var(--color-link);
   text-decoration: none;
 }
 
-.resume-text {
-  background: #f6f6f8;
-  padding: 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  white-space: pre-wrap;
-  margin-top: 12px;
+.download-link:hover {
+  text-decoration: underline;
 }
 
-/* Avaliação */
+.resume-text {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* ===================== EVALUATION ===================== */
 .evaluation-card label {
   display: block;
-  margin-top: 12px;
+  margin-top: 14px;
+  font-size: 14px;
   font-weight: 600;
+  color: var(--color-primary);
 }
 
 .evaluation-card input,
 .evaluation-card textarea {
   width: 100%;
   margin-top: 6px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  font-size: 14px;
 }
 
+.evaluation-card input:focus,
+.evaluation-card textarea:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 2px rgba(21, 101, 192, 0.15);
+}
+
+/* ===================== ACTIONS ===================== */
 .decision-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
+/* ===================== BUTTONS ===================== */
 .btn {
   padding: 10px 18px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: none;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.05s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
 }
 
 .btn.approve {
-  background: #2e7d32;
-  color: white;
+  background: var(--color-success);
+  color: #fff;
 }
 
 .btn.reject {
-  background: #c62828;
-  color: white;
+  background: var(--color-danger);
+  color: #fff;
 }
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+/* ===================== CONTRACT ACTION ===================== */
+.contract-action {
+  margin-left: auto;
+}
+
+.btn-contract {
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--color-warning);
+  color: #000;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.05s ease;
+}
+
+.btn-contract:hover {
+  filter: brightness(1.05);
+}
+
+.btn-contract:active {
+  transform: translateY(1px);
+}
+
+/* ===================== PERSONAL DATA CARD ===================== */
+
+.candidate-grid > .card:not(.resume-card):not(.evaluation-card) {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  column-gap: 18px;
+  row-gap: 14px;
+  padding: 22px;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #f9fafc 100%
+  );
+}
+
+/* Título */
+.candidate-grid > .card:not(.resume-card):not(.evaluation-card) h2 {
+  grid-column: span 2;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+/* Remove empilhamento antigo */
+.candidate-grid > .card:not(.resume-card):not(.evaluation-card) .info-row {
+  display: contents;
+}
+
+/* Labels */
+.candidate-grid > .card:not(.resume-card):not(.evaluation-card) .info-row span {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-align: right;
+  padding-top: 2px;
+}
+
+/* Valores */
+.candidate-grid > .card:not(.resume-card):not(.evaluation-card) .info-row p {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-primary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+/* Endereço pode ocupar mais espaço visual */
+.candidate-grid
+  > .card:not(.resume-card):not(.evaluation-card)
+  .info-row:last-child
+  p {
+  font-weight: 500;
+}
+
+

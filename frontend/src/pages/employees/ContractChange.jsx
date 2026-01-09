@@ -2,7 +2,8 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../store/AuthStore";
-import Steps from "react-steps"; // npm i react-steps se não tiver
+import Steps from "rc-steps"; // Nova lib moderna
+import "rc-steps/assets/index.css"; // Estilo básico
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -15,7 +16,7 @@ const steps = [
 ];
 
 export default function ContractChange() {
-  const { id } = useParams(); // id do colaborador
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -54,7 +55,8 @@ export default function ContractChange() {
       <h1>Alteração Contratual</h1>
       <p>Colaborador ID: {id || "Novo"}</p>
 
-      <Steps steps={steps} current={0} />
+      {/* Novo Stepper moderno e compatível */}
+      <Steps current={0} items={steps} />
 
       <Formik
         initialValues={initialValues}
@@ -100,9 +102,9 @@ export default function ContractChange() {
               <input
                 type="file"
                 multiple
-                onChange={(e) => setFieldValue("documentos", e.target.files)}
+                onChange={(e) => setFieldValue("documentos", Array.from(e.target.files || []))}
               />
-              <p>Arquivos selecionados: {values.documentos.length}</p>
+              <p>Arquivos selecionados: {values.documentos?.length || 0}</p>
             </div>
 
             {/* Step 3: Aprovação */}
