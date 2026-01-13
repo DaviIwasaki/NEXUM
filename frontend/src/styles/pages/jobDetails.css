@@ -2,40 +2,45 @@
 .job-details-container {
   max-width: 900px;
   margin: 40px auto;
-  padding: 28px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   font-family: "Inter", sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #333;
 }
 
 /* ===================== BREADCRUMB ===================== */
 .breadcrumb {
   font-size: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   color: #6b6b6b;
+  display: flex;
+  gap: 6px;
 }
 
 .breadcrumb span {
   cursor: pointer;
   color: #009adb;
+  transition: color 0.2s;
 }
 
 .breadcrumb span:hover {
   text-decoration: underline;
+  color: #007fb6;
 }
 
 /* ===================== HEADER ===================== */
 .job-header {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
 .job-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
   color: #212145;
   margin: 0;
@@ -44,17 +49,18 @@
 .job-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   font-size: 14px;
   color: #6b6b6b;
 }
 
 .job-status {
-  padding-left: 5px;
-  padding-right: 5px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   font-weight: 600;
   color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .job-status.aberta {
@@ -70,16 +76,17 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .btn {
-  padding: 10px 18px;
-  border-radius: 6px;
+  padding: 10px 20px;
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
+  font-size: 14px;
 }
 
 .btn-primary {
@@ -104,22 +111,39 @@
 .job-sections {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
 .job-section h2 {
   font-size: 20px;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   color: #212145;
 }
 
 /* ===================== SCROLL DESCRIÇÃO ===================== */
 .job-description-scroll {
-  max-height: 200px;
+  max-height: 220px;
   overflow-y: auto;
   padding-right: 6px;
-  line-height: 1.5;
+  line-height: 1.6;
+  border-left: 3px solid #009adb;
+  padding-left: 12px;
+}
+
+/* Custom scrollbar */
+.job-description-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.job-description-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 157, 219, 0.6);
+  border-radius: 4px;
+}
+
+.job-description-scroll::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 4px;
 }
 
 /* ===================== REQUISITOS ===================== */
@@ -127,14 +151,25 @@
   list-style: none;
   padding-left: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .job-requirements li {
   background: #e6f3ff;
-  padding: 8px 12px;
-  border-radius: 6px;
-  margin-bottom: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
   font-size: 14px;
+  position: relative;
+}
+
+.job-requirements li::before {
+  content: "✓";
+  position: absolute;
+  left: 10px;
+  color: #009adb;
+  font-weight: bold;
 }
 
 /* ===================== MÉTRICAS RH ===================== */
@@ -142,13 +177,15 @@
   list-style: none;
   padding-left: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .job-metrics li {
   background: #f0f0f0;
-  padding: 6px 10px;
-  border-radius: 6px;
-  margin-bottom: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
   font-size: 14px;
 }
 
@@ -156,7 +193,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,13 +202,14 @@
 
 .modal-box {
   background: #fff;
-  padding: 24px;
-  border-radius: 12px;
+  padding: 28px;
+  border-radius: 16px;
   width: 90%;
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .modal-buttons {
@@ -186,7 +224,7 @@
 }
 
 /* ===================== RESPONSIVIDADE ===================== */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .job-meta {
     flex-direction: column;
     gap: 8px;
@@ -198,5 +236,24 @@
 
   .job-description-scroll {
     max-height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-details-container {
+    padding: 20px;
+  }
+
+  .job-title {
+    font-size: 24px;
+  }
+
+  .job-section h2 {
+    font-size: 18px;
+  }
+
+  .btn {
+    font-size: 13px;
+    padding: 8px 14px;
   }
 }

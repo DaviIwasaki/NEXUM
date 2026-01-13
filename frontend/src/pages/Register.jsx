@@ -50,63 +50,77 @@ export default function Register() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      // Limpa formatação do CPF
-      const cpfLimpo = values.cpf.replace(/\D/g, "");
+      console.log("[Register] Iniciando cadastro com valores:", values);
 
-      let textoExtraido = null;
+      const formData = new FormData();
+
+      // Campos normais
+      formData.append("nome", values.nome.trim());
+      formData.append("email", values.email.trim().toLowerCase());
+      formData.append("cpf", values.cpf.replace(/\D/g, "")); // já limpo no form
+      formData.append("telefone", values.telefone || "");
+      formData.append("endereco", values.endereco.trim());
+      formData.append("pretensao_salarial", values.pretensaoSalarial || "");
+      formData.append("senha", values.senha);
+      formData.append("confirmar_senha", values.confirmarSenha);
+      formData.append("consentimento_lgpd", values.consentimento);
+
       if (curriculo) {
-        try {
-          const arrayBuffer = await curriculo.arrayBuffer();
-          const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-          const pdf = await loadingTask.promise;
-          let fullText = "";
-          for (let i = 1; i <= pdf.numPages; i++) {
-            const page = await pdf.getPage(i);
-            const textContent = await page.getTextContent();
-            const pageText = textContent.items
-              .map((item) => item.str)
-              .join(" ");
-            fullText += pageText + " ";
-          }
-          textoExtraido = fullText.substring(0, 1000); // limite para preview
-          console.log("Texto extraído do currículo:", textoExtraido);
-        } catch (err) {
-          console.error("Erro ao extrair texto do PDF:", err);
-          toast.warning(
-            "Não foi possível ler o currículo. Cadastro continua sem preview."
-          );
-        }
+        formData.append("curriculo", curriculo);
       }
 
-      // Mock de criação de usuário
-      const novoUsuario = {
-        id: Date.now(), // ID temporário
-        nome: values.nome,
-        email: values.email,
-        role: "Candidato",
-        cpf: cpfLimpo,
-        telefone: values.telefone,
-        endereco: values.endereco, // NOVO: Salva endereço
-        pretensaoSalarial: values.pretensaoSalarial,
-        curriculo: curriculo ? curriculo.name : null,
-        curriculoTexto: textoExtraido,
-      };
+      console.log("[Register] Enviando FormData para /auth/register");
 
-      console.log("Candidato cadastrado:", novoUsuario);
-      if (curriculo) console.log("Currículo recebido:", curriculo.name);
+      const registerResponse = await fetch(
+        "http://localhost:8000/auth/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!registerResponse.ok) {
+        const errorData = await registerResponse.json();
+        console.error("[Register] Erro no register:", errorData);
+        throw new Error(errorData.detail || "Erro ao cadastrar");
+      }
+
+      const registerData = await registerResponse.json();
+      const token = registerData.access_token;
+      console.log("[Register] Token recebido:", token.substring(0, 20) + "...");
+
+      // NOVO: Puxar usuário completo com ID via /auth/me
+      console.log(
+        "[Register] Buscando dados completos do usuário via /auth/me"
+      );
+      const meResponse = await fetch("http://localhost:8000/auth/me", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!meResponse.ok) {
+        const meError = await meResponse.json();
+        console.error("[Register] Erro no /auth/me:", meError);
+        throw new Error(meError.detail || "Erro ao carregar dados do usuário");
+      }
+
+      const userData = await meResponse.json();
+      console.log("[Register] Usuário completo recebido:", userData);
+
+      // Login com dados reais (agora inclui id!)
+      login(userData, token);
 
       toast.success("Conta criada com sucesso! Bem-vindo ao NEXUM.");
 
-      // Login automático
-      login(novoUsuario, "fake-token-candidato");
-
-      // Redireciona
       setTimeout(() => {
         navigate("/dashboard");
       }, 1500);
     } catch (err) {
-      toast.error("Erro ao criar conta. Tente novamente.");
-      console.error(err);
+      console.error("[Register] Erro completo no submit:", err);
+      toast.error(err.message || "Erro ao criar conta. Tente novamente.");
     } finally {
       setSubmitting(false);
     }

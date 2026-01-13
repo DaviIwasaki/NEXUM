@@ -1,44 +1,39 @@
 from logging.config import fileConfig
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
-from alembic import context
-
-# Imports para carregar suas settings e models ---
 import os
 import sys
 from pathlib import Path
 
-# Adiciona o diretório raiz do backend ao path para permitir imports
-# Path(__file__).resolve().parents[2] → sobe dois níveis: migrations → app → backend
-sys.path.append(str(Path(__file__).resolve().parents[2]))
+from sqlalchemy import engine_from_config, pool
+from alembic import context
 
-# Importe suas settings (ajuste o caminho se o arquivo settings.py estiver em outro lugar)
-from config.settings import settings
+# -----------------------------
+# Configura path para importar app
+sys.path.append(str(Path(__file__).resolve().parents[2]))  # backend/
+# -----------------------------
 
-# Importe o Base dos seus models SQLAlchemy
-# Ajuste o caminho conforme onde você definiu o Base (ex: domain/models.py ou domain/base.py)
-from domain.models import Base  # <--- MUDE SE NECESSÁRIO (ex: from app.domain.models import Base)
+# Carrega variáveis do .env
+from dotenv import load_dotenv
+load_dotenv()
 
-# ---------------------------------------------------------
+# Importa Base e todos os models
+from app.domain.models import Base  # Base está definido nos seus models
+from app.domain.models import *     # importa User, Empresa, AuditLog etc.
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+# -----------------------------
+# Configuração Alembic
 config = context.config
 
-# Sobrescreve a URL do banco com a do seu .env ---
-# Isso evita colocar senha no alembic.ini e usa a variável carregada nas settings
-config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
-# ---------------------------------------------------------
+# Sobrescreve sqlalchemy.url com a variável do .env (se não estiver no alembic.ini)
+if not config.get_main_option("sqlalchemy.url"):
+    config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
 
-# Interpret the config file for Python logging.
+# Logging
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# Define os models para o autogenerate funcionar ---
+# Define os models para autogenerate
 target_metadata = Base.metadata
-# ---------------------------------------------------------
+# -----------------------------
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
@@ -65,7 +60,7 @@ def run_migrations_online() -> None:
     with connectable.connect() as connection:
         context.configure(
             connection=connection,
-            target_metadata=target_metadata
+            target_metadata=target_metadata,
         )
 
         with context.begin_transaction():
