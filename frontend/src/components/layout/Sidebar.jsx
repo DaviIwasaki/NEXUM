@@ -65,9 +65,8 @@ export default function Sidebar() {
       { name: "Relatórios Estratégicos", path: "/relatorios/estrategicos" },
       { name: "Logs", path: "/logs" },
     ],
-    Admin: [
+    ADMIN: [
       { name: "Dashboard", path: "/dashboard" },
-      { name: "Nova Empresa", path: "/empresas/nova" },
       { name: "Usuários e Permissões", path: "/config/usuarios" },
       { name: "Cargos e Departamentos", path: "/config/cargos-departamentos" },
       { name: "Relatórios Compliance", path: "/relatorios/compliance" },

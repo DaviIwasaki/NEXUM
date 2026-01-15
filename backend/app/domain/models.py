@@ -20,16 +20,16 @@ from app.infrastructure.db import Base
 # =====================
 
 class UserRole(str, enum.Enum):
-    CANDIDATO = "Candidato"
-    COLABORADOR = "Colaborador"
-    GESTOR = "Gestor"
+    CANDIDATO = "CANDIDATO"
+    COLABORADOR = "COLABORADOR"
+    GESTOR = "GESTOR"
     RH = "RH"
-    ADMIN = "Admin"
-    AUDITOR = "Auditor"
+    ADMIN = "ADMIN"
+    AUDITOR = "AUDITOR"
 
 
 # =====================
-# CORE
+# EMPRESA (mantida como singleton)
 # =====================
 
 class Empresa(Base):
@@ -40,8 +40,10 @@ class Empresa(Base):
     cnpj = Column(String(255), nullable=False)
     data_criacao = Column(DateTime, default=datetime.utcnow)
 
-    users = relationship("User", back_populates="empresa")
 
+# =====================
+# USUÁRIOS (sem empresa_id)
+# =====================
 
 class User(Base):
     __tablename__ = "users"
@@ -58,8 +60,10 @@ class User(Base):
     senha_hash = Column(String(255), nullable=False)
     role = Column(Enum(UserRole, name="userrole"), nullable=False)
 
-    empresa_id = Column(Integer, ForeignKey("empresas.id"))
     consentimento_lgpd = Column(Boolean, default=False)
+
+    cargo_id = Column(Integer, ForeignKey("cargos.id"), nullable=True)
+    departamento_id = Column(Integer, ForeignKey("departamentos.id"), nullable=True)
 
     data_criacao = Column(DateTime, default=datetime.utcnow)
     data_atualizacao = Column(
@@ -74,51 +78,18 @@ class User(Base):
     pretensao_salarial = Column(String(255))
 
     # Relacionamentos
-    empresa = relationship("Empresa", back_populates="users")
+    cargo = relationship("Cargo", foreign_keys=[cargo_id])
+    departamento = relationship("Departamento", foreign_keys=[departamento_id])
 
-    candidaturas = relationship(
-        "Candidatura",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
+    candidaturas = relationship("Candidatura", back_populates="user", cascade="all, delete-orphan")
+    activities = relationship("UserActivity", back_populates="user", cascade="all, delete-orphan")
+    contract = relationship("EmployeeContract", uselist=False, back_populates="user", cascade="all, delete-orphan")
+    documents = relationship("EmployeeDocument", back_populates="user", cascade="all, delete-orphan")
+    daily_histories = relationship("DailyHistory", back_populates="user", cascade="all, delete-orphan")
+    contract_histories = relationship("ContractHistory", back_populates="user", cascade="all, delete-orphan")
+    pdi = relationship("PDI", uselist=False, back_populates="user", cascade="all, delete-orphan")
 
-    activities = relationship(
-        "UserActivity",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
-
-    contract = relationship(
-        "EmployeeContract",
-        uselist=False,
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
-
-    documents = relationship(
-        "EmployeeDocument",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
-
-    daily_histories = relationship(
-        "DailyHistory",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
-
-    contract_histories = relationship(
-        "ContractHistory",
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
-
-    pdi = relationship(
-        "PDI",
-        uselist=False,
-        back_populates="user",
-        cascade="all, delete-orphan",
-    )
+    departamentos_gerenciados = relationship("Departamento", back_populates="gerente", foreign_keys="[Departamento.gerente_id]")
 
 
 # =====================
@@ -149,7 +120,6 @@ class Job(Base):
     id = Column(Integer, primary_key=True)
     titulo = Column(String(255), nullable=False)
 
-    empresa_id = Column(Integer, ForeignKey("empresas.id"))
     status = Column(String(255), default="Aberta")
     data_abertura = Column(DateTime, default=datetime.utcnow)
     prazo = Column(DateTime) 
@@ -157,7 +127,6 @@ class Job(Base):
     descricao = Column(Text) 
     requisitos = Column(Text) 
 
-    empresa = relationship("Empresa")
 
 class Candidatura(Base):
     __tablename__ = "candidaturas"
@@ -174,7 +143,6 @@ class Candidatura(Base):
     feedback_resumo = Column(Text)
 
     data = Column(String(255))
-    empresa = Column(String(255))
     vaga = Column(String(255))
 
     user = relationship("User", back_populates="candidaturas")
@@ -226,7 +194,8 @@ class ContractHistory(Base):
     novo_dept = Column(String(255))
 
     user = relationship("User", back_populates="contract_histories")
-    
+
+
 # =====================
 # CONTRATO / DOCUMENTOS
 # =====================
@@ -272,3 +241,35 @@ class PDI(Base):
     data_geracao = Column(DateTime)
 
     user = relationship("User", back_populates="pdi")
+
+
+# =====================
+# ESTRUTURA ORGANIZACIONAL
+# =====================
+
+class Departamento(Base):
+    __tablename__ = "departamentos"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False, unique=True)
+    descricao = Column(Text, nullable=True)
+    gerente_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    data_criacao = Column(DateTime, default=datetime.utcnow)
+
+    gerente = relationship("User", foreign_keys=[gerente_id], back_populates="departamentos_gerenciados")
+    cargos = relationship("Cargo", back_populates="departamento", cascade="all, delete-orphan")
+    users = relationship("User", foreign_keys="[User.departamento_id]", back_populates="departamento")
+
+
+class Cargo(Base):
+    __tablename__ = "cargos"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String(100), nullable=False)
+    nivel = Column(String(50), nullable=True)
+    descricao = Column(Text, nullable=True)
+    departamento_id = Column(Integer, ForeignKey("departamentos.id"), nullable=False)
+    data_criacao = Column(DateTime, default=datetime.utcnow)
+
+    departamento = relationship("Departamento", back_populates="cargos")
+    users = relationship("User", foreign_keys="[User.cargo_id]", back_populates="cargo")

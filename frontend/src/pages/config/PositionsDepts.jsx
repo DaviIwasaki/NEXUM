@@ -1,61 +1,131 @@
 // src/pages/config/PositionsDepts.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../store/AuthStore";
 import { toast } from "react-toastify";
 import "../../styles/pages/config/positionsDepts.css";
 
-const mockCargos = [
-  { id: 1, nome: "Desenvolvedor Frontend", nivel: "Pleno", departamento: "TI" },
-  { id: 2, nome: "Analista de RH", nivel: "Pleno", departamento: "Recursos Humanos" },
-  { id: 3, nome: "Product Manager", nivel: "Sênior", departamento: "Produto" },
-  { id: 4, nome: "Designer UX/UI", nivel: "Júnior", departamento: "Design" },
-];
-
-const mockDepartamentos = [
-  { id: 1, nome: "TI", gerente: "Carlos Lima" },
-  { id: 2, nome: "Recursos Humanos", gerente: "Ana Souza" },
-  { id: 3, nome: "Produto", gerente: "Pedro Santos" },
-  { id: 4, nome: "Design", gerente: "Maria Oliveira" },
-];
-
 export default function PositionsDepts() {
   const { user } = useAuth();
-  const [cargos, setCargos] = useState(mockCargos);
-  const [departamentos, setDepartamentos] = useState(mockDepartamentos);
-  const [novoCargo, setNovoCargo] = useState({ nome: "", nivel: "Júnior", departamento: "TI" });
-  const [novoDept, setNovoDept] = useState({ nome: "", gerente: "" });
 
-  const handleAddCargo = () => {
-    if (!novoCargo.nome.trim()) {
-      toast.error("Nome do cargo obrigatório");
-      return;
+  const [cargos, setCargos] = useState([]);
+  const [departamentos, setDepartamentos] = useState([]);
+  const [gerentesPossiveis, setGerentesPossiveis] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [novoCargo, setNovoCargo] = useState({
+    nome: "",
+    nivel: "Júnior",
+    departamento_id: "",
+  });
+  const [novoDept, setNovoDept] = useState({ nome: "", gerente_id: "" });
+
+  const token = localStorage.getItem("nexum_token");
+  const apiBase = "http://localhost:8000";
+
+  const fetchWithToken = useCallback(async (endpoint, options = {}) => {
+    if (!token) throw new Error("Token não encontrado");
+    const response = await fetch(`${apiBase}${endpoint}`, {
+      ...options,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const msg = errorData.detail || `Erro ${response.status}`;
+      throw new Error(msg);
     }
+    return response.json();
+  }, [token]);
 
-    const cargoNovo = {
-      id: cargos.length + 1,
-      ...novoCargo,
-    };
+  const loadData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const [cargosData, deptsData, usersData] = await Promise.all([
+        fetchWithToken("/config/cargos"),
+        fetchWithToken("/config/departamentos"),
+        fetchWithToken("/admin/users"),
+      ]);
 
-    setCargos([...cargos, cargoNovo]);
-    toast.success(`Cargo "${cargoNovo.nome}" cadastrado!`);
-    setNovoCargo({ nome: "", nivel: "Júnior", departamento: "TI" });
+      setCargos(cargosData);
+      setDepartamentos(deptsData);
+
+      const gerentes = usersData.filter((u) =>
+        ["GESTOR", "RH", "ADMIN"].includes(u.role)
+      );
+      setGerentesPossiveis(gerentes);
+    } catch (err) {
+      console.error("[PositionsDepts] Erro:", err);
+      toast.error(err.message || "Falha ao carregar dados");
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [fetchWithToken]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const handleAddCargo = async () => {
+    if (!novoCargo.nome.trim()) return toast.error("Nome do cargo obrigatório");
+    if (!novoCargo.departamento_id)
+      return toast.error("Selecione um departamento");
+
+    try {
+      const payload = {
+        ...novoCargo,
+        departamento_id: Number(novoCargo.departamento_id), // Converte string → int
+      };
+      await fetchWithToken("/config/cargos", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      toast.success("Cargo adicionado!");
+      setNovoCargo({ nome: "", nivel: "Júnior", departamento_id: "" });
+      loadData();
+    } catch (err) {
+      toast.error(err.message || "Falha ao adicionar cargo");
+    }
   };
 
-  const handleAddDepartamento = () => {
-    if (!novoDept.nome.trim()) {
-      toast.error("Nome do departamento obrigatório");
-      return;
+  const handleAddDepartamento = async () => {
+    if (!novoDept.nome.trim())
+      return toast.error("Nome do departamento obrigatório");
+
+    try {
+      const payload = {
+        nome: novoDept.nome,
+        gerente_id: novoDept.gerente_id ? Number(novoDept.gerente_id) : null, // Converte ou null
+      };
+      await fetchWithToken("/config/departamentos", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      toast.success("Departamento adicionado!");
+      setNovoDept({ nome: "", gerente_id: "" });
+      loadData();
+    } catch (err) {
+      toast.error(err.message || "Falha ao adicionar departamento");
     }
-
-    const deptNovo = {
-      id: departamentos.length + 1,
-      ...novoDept,
-    };
-
-    setDepartamentos([...departamentos, deptNovo]);
-    toast.success(`Departamento "${deptNovo.nome}" cadastrado!`);
-    setNovoDept({ nome: "", gerente: "" });
   };
+
+  if (loading)
+    return (
+      <div className="loading">Carregando estrutura organizacional...</div>
+    );
+  if (error)
+    return (
+      <div className="error">
+        Erro: {error}
+        <button onClick={loadData}>Tentar novamente</button>
+      </div>
+    );
 
   return (
     <main className="positions-depts-container">
@@ -68,11 +138,15 @@ export default function PositionsDepts() {
           <input
             placeholder="Nome do cargo"
             value={novoCargo.nome}
-            onChange={(e) => setNovoCargo({ ...novoCargo, nome: e.target.value })}
+            onChange={(e) =>
+              setNovoCargo({ ...novoCargo, nome: e.target.value })
+            }
           />
           <select
             value={novoCargo.nivel}
-            onChange={(e) => setNovoCargo({ ...novoCargo, nivel: e.target.value })}
+            onChange={(e) =>
+              setNovoCargo({ ...novoCargo, nivel: e.target.value })
+            }
           >
             <option>Júnior</option>
             <option>Pleno</option>
@@ -81,26 +155,43 @@ export default function PositionsDepts() {
             <option>Gerente</option>
           </select>
           <select
-            value={novoCargo.departamento}
-            onChange={(e) => setNovoCargo({ ...novoCargo, departamento: e.target.value })}
+            value={novoCargo.departamento_id}
+            onChange={(e) =>
+              setNovoCargo({ ...novoCargo, departamento_id: e.target.value })
+            }
           >
-            {departamentos.map(d => <option key={d.id}>{d.nome}</option>)}
+            <option value="">Selecione departamento</option>
+            {departamentos.map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.nome}
+              </option>
+            ))}
           </select>
           <button onClick={handleAddCargo}>+ Adicionar Cargo</button>
         </div>
 
         <table>
           <thead>
-            <tr><th>Nome</th><th>Nível</th><th>Departamento</th></tr>
+            <tr>
+              <th>Nome</th>
+              <th>Nível</th>
+              <th>Departamento</th>
+            </tr>
           </thead>
           <tbody>
-            {cargos.map(c => (
-              <tr key={c.id}>
-                <td>{c.nome}</td>
-                <td>{c.nivel}</td>
-                <td>{c.departamento}</td>
+            {cargos.length === 0 ? (
+              <tr>
+                <td colSpan="3">Nenhum cargo cadastrado ainda.</td>
               </tr>
-            ))}
+            ) : (
+              cargos.map((c) => (
+                <tr key={c.id}>
+                  <td>{c.nome}</td>
+                  <td>{c.nivel || "-"}</td>
+                  <td>{c.departamento_nome}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </section>
@@ -113,25 +204,44 @@ export default function PositionsDepts() {
             value={novoDept.nome}
             onChange={(e) => setNovoDept({ ...novoDept, nome: e.target.value })}
           />
-          <input
-            placeholder="Gerente responsável"
-            value={novoDept.gerente}
-            onChange={(e) => setNovoDept({ ...novoDept, gerente: e.target.value })}
-          />
-          <button onClick={handleAddDepartamento}>+ Adicionar Departamento</button>
+          <select
+            value={novoDept.gerente_id}
+            onChange={(e) =>
+              setNovoDept({ ...novoDept, gerente_id: e.target.value })
+            }
+          >
+            <option value="">Sem gerente (opcional)</option>
+            {gerentesPossiveis.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.nome} ({g.role})
+              </option>
+            ))}
+          </select>
+          <button onClick={handleAddDepartamento}>
+            + Adicionar Departamento
+          </button>
         </div>
 
         <table>
           <thead>
-            <tr><th>Nome</th><th>Gerente</th></tr>
+            <tr>
+              <th>Nome</th>
+              <th>Gerente</th>
+            </tr>
           </thead>
           <tbody>
-            {departamentos.map(d => (
-              <tr key={d.id}>
-                <td>{d.nome}</td>
-                <td>{d.gerente}</td>
+            {departamentos.length === 0 ? (
+              <tr>
+                <td colSpan="2">Nenhum departamento cadastrado ainda.</td>
               </tr>
-            ))}
+            ) : (
+              departamentos.map((d) => (
+                <tr key={d.id}>
+                  <td>{d.nome}</td>
+                  <td>{d.gerente_nome || "Sem gerente"}</td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </section>

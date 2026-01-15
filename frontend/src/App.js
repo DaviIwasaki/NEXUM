@@ -10,7 +10,6 @@ import Footer from "./components/layout/Footer";
 import Login from "./pages/auth/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import CompanyCreate from "./pages/CompanyCreate";
 import CreateJob from "./pages/CreateJob";
 import JobList from "./pages/JobList";
 import JobDetails from "./pages/JobDetails";
@@ -42,6 +41,7 @@ import ComplianceReports from "./pages/reports/ComplianceReports";
 import StrategicReports from "./pages/reports/StrategicReports";
 import UsersManagement from "./pages/config/UsersManagement";
 import PositionsDepts from "./pages/config/PositionsDepts";
+import AdminUserCreate from "./pages/AdminUserCreate";
 
 import "./styles/global.css";
 
@@ -82,19 +82,9 @@ function App() {
 
           {/* Admin */}
           <Route
-            path="/empresas/nova"
-            element={
-              <ProtectedRoute roles={["Admin"]}>
-                <AppLayout>
-                  <CompanyCreate />
-                </AppLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/config/usuarios"
             element={
-              <ProtectedRoute roles={["Admin"]}>
+              <ProtectedRoute roles={["ADMIN"]}>
                 <AppLayout>
                   <UsersManagement />
                 </AppLayout>
@@ -104,7 +94,7 @@ function App() {
           <Route
             path="/config/cargos-departamentos"
             element={
-              <ProtectedRoute roles={["Admin"]}>
+              <ProtectedRoute roles={["ADMIN"]}>
                 <AppLayout>
                   <PositionsDepts />
                 </AppLayout>
@@ -126,7 +116,7 @@ function App() {
           <Route
             path="/folha-calculo"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <PayrollCalculation />
                 </AppLayout>
@@ -136,7 +126,7 @@ function App() {
           <Route
             path="/relatorios-fiscais"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <FiscalReports />
                 </AppLayout>
@@ -146,7 +136,7 @@ function App() {
           <Route
             path="/beneficios/admin"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <BenefitsAdmin />
                 </AppLayout>
@@ -156,7 +146,7 @@ function App() {
           <Route
             path="/treinamentos/admin"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <TrainingAdmin />
                 </AppLayout>
@@ -188,7 +178,7 @@ function App() {
           <Route
             path="/processo/:id"
             element={
-              <ProtectedRoute roles={["RH", "Gestor"]}>
+              <ProtectedRoute roles={["RH", "GESTOR"]}>
                 <AppLayout>
                   <SelectionProcess />
                 </AppLayout>
@@ -208,7 +198,7 @@ function App() {
           <Route
             path="/meu-perfil"
             element={
-              <ProtectedRoute roles={["Colaborador"]}>
+              <ProtectedRoute roles={["COLABORADOR"]}>
                 <AppLayout>
                   <PersonProfile />
                 </AppLayout>
@@ -218,7 +208,7 @@ function App() {
           <Route
             path="/colaboradores/:id"
             element={
-              <ProtectedRoute roles={["RH", "Admin", "Gestor"]}>
+              <ProtectedRoute roles={["RH", "ADMIN", "GESTOR"]}>
                 <AppLayout>
                   <PersonProfile />
                 </AppLayout>
@@ -228,7 +218,7 @@ function App() {
           <Route
             path="/candidato/:candidaturaId"
             element={
-              <ProtectedRoute roles={["RH", "Gestor"]}>
+              <ProtectedRoute roles={["RH", "GESTOR"]}>
                 <AppLayout>
                   <CandidateProcessDetails />
                 </AppLayout>
@@ -238,7 +228,7 @@ function App() {
           <Route
             path="/logs"
             element={
-              <ProtectedRoute roles={["Admin", "RH", "Gestor"]}>
+              <ProtectedRoute roles={["ADMIN", "RH", "GESTOR"]}>
                 <AppLayout>
                   <AuditLog />
                 </AppLayout>
@@ -258,7 +248,7 @@ function App() {
           <Route
             path="/colaboradores"
             element={
-              <ProtectedRoute roles={["RH", "Admin", "Gestor"]}>
+              <ProtectedRoute roles={["RH", "ADMIN", "GESTOR"]}>
                 <AppLayout>
                   <EmployeeList />
                 </AppLayout>
@@ -268,7 +258,7 @@ function App() {
           <Route
             path="/colaboradores/novo"
             element={
-              <ProtectedRoute roles={["Gestor", "Admin"]}>
+              <ProtectedRoute roles={["GESTOR", "ADMIN"]}>
                 <AppLayout>
                   <NewEmployee />
                 </AppLayout>
@@ -278,7 +268,7 @@ function App() {
           <Route
             path="/colaboradores/:id/alteracao"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <ContractChange />
                 </AppLayout>
@@ -288,7 +278,7 @@ function App() {
           <Route
             path="/ponto"
             element={
-              <ProtectedRoute roles={["Colaborador"]}>
+              <ProtectedRoute roles={["COLABORADOR"]}>
                 <AppLayout>
                   <TimeClock />
                 </AppLayout>
@@ -298,7 +288,7 @@ function App() {
           <Route
             path="/espelho-ponto"
             element={
-              <ProtectedRoute roles={["Colaborador", "Gestor", "RH"]}>
+              <ProtectedRoute roles={["COLABORADOR", "GESTOR", "RH"]}>
                 <AppLayout>
                   <PointMirror />
                 </AppLayout>
@@ -308,7 +298,7 @@ function App() {
           <Route
             path="/aprovacoes-pendentes"
             element={
-              <ProtectedRoute roles={["Gestor"]}>
+              <ProtectedRoute roles={["GESTOR"]}>
                 <AppLayout>
                   <PendingApprovals />
                 </AppLayout>
@@ -318,7 +308,7 @@ function App() {
           <Route
             path="/holerite"
             element={
-              <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
+              <ProtectedRoute roles={["COLABORADOR", "RH", "ADMIN"]}>
                 <AppLayout>
                   <PayslipIndividual />
                 </AppLayout>
@@ -328,7 +318,7 @@ function App() {
           <Route
             path="/relatorios/compliance"
             element={
-              <ProtectedRoute roles={["RH", "Admin", "Auditor"]}>
+              <ProtectedRoute roles={["RH", "ADMIN", "AUDITOR"]}>
                 <AppLayout>
                   <ComplianceReports />
                 </AppLayout>
@@ -338,7 +328,7 @@ function App() {
           <Route
             path="/relatorios/estrategicos"
             element={
-              <ProtectedRoute roles={["RH", "Admin", "Gestor"]}>
+              <ProtectedRoute roles={["RH", "ADMIN", "GESTOR"]}>
                 <AppLayout>
                   <StrategicReports />
                 </AppLayout>
@@ -348,7 +338,7 @@ function App() {
           <Route
             path="/beneficios/catalogo"
             element={
-              <ProtectedRoute roles={["Colaborador"]}>
+              <ProtectedRoute roles={["COLABORADOR"]}>
                 <AppLayout>
                   <BenefitsCatalog />
                 </AppLayout>
@@ -358,7 +348,7 @@ function App() {
           <Route
             path="/meus-beneficios"
             element={
-              <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
+              <ProtectedRoute roles={["COLABORADOR", "RH", "ADMIN"]}>
                 <AppLayout>
                   <MyBenefits />
                 </AppLayout>
@@ -368,7 +358,7 @@ function App() {
           <Route
             path="/beneficios/admin"
             element={
-              <ProtectedRoute roles={["RH", "Admin"]}>
+              <ProtectedRoute roles={["RH", "ADMIN"]}>
                 <AppLayout>
                   <BenefitsAdmin />
                 </AppLayout>
@@ -378,7 +368,7 @@ function App() {
           <Route
             path="/ciclos-avaliacao"
             element={
-              <ProtectedRoute roles={["Gestor", "RH", "Admin"]}>
+              <ProtectedRoute roles={["GESTOR", "RH", "ADMIN"]}>
                 <AppLayout>
                   <EvaluationCycles />
                 </AppLayout>
@@ -388,7 +378,7 @@ function App() {
           <Route
             path="/avaliacao/formulario/:cicloId"
             element={
-              <ProtectedRoute roles={["Gestor", "Colaborador", "RH"]}>
+              <ProtectedRoute roles={["GESTOR", "COLABORADOR", "RH"]}>
                 <AppLayout>
                   <EvaluationForm />
                 </AppLayout>
@@ -398,7 +388,7 @@ function App() {
           <Route
             path="/pdi"
             element={
-              <ProtectedRoute roles={["Colaborador", "Gestor", "RH"]}>
+              <ProtectedRoute roles={["COLABORADOR", "GESTOR", "RH"]}>
                 <AppLayout>
                   <PDI />
                 </AppLayout>
@@ -408,7 +398,7 @@ function App() {
           <Route
             path="/trilhas-aprendizagem"
             element={
-              <ProtectedRoute roles={["Colaborador"]}>
+              <ProtectedRoute roles={["COLABORADOR"]}>
                 <AppLayout>
                   <TrainingCatalog />
                 </AppLayout>
@@ -418,7 +408,7 @@ function App() {
           <Route
             path="/historico-treinamentos"
             element={
-              <ProtectedRoute roles={["Colaborador", "RH", "Admin"]}>
+              <ProtectedRoute roles={["COLABORADOR", "RH", "ADMIN"]}>
                 <AppLayout>
                   <TrainingHistory />
                 </AppLayout>
@@ -428,9 +418,19 @@ function App() {
           <Route
             path="/saude/solicitacoes"
             element={
-              <ProtectedRoute roles={["Colaborador", "Gestor", "RH"]}>
+              <ProtectedRoute roles={["COLABORADOR", "GESTOR", "RH"]}>
                 <AppLayout>
                   <HealthRequest />
+                </AppLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users/novo"
+            element={
+              <ProtectedRoute roles={["ADMIN"]}>
+                <AppLayout>
+                  <AdminUserCreate />
                 </AppLayout>
               </ProtectedRoute>
             }

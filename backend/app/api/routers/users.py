@@ -35,7 +35,7 @@ class UserProfileOut(BaseModel):
     departamento: Optional[str] = None
     salario_atual: Optional[str] = None
     admissao: Optional[str] = None
-    status: str  # "Candidato" ou "Ativo"
+    status: str  # "CANDIDATO" ou "Ativo"
 
 
 class ActivityOut(BaseModel):
@@ -94,14 +94,14 @@ class PDIOut(BaseModel):
 def get_user_profile(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Candidato", "Colaborador", "RH", "Gestor", "Admin"))
+    current_user: User = Depends(require_any_role("CANDIDATO", "COLABORADOR", "RH", "GESTOR", "ADMIN"))
 ):
     try:
         user = db.query(User).filter(User.id == id, User.is_active == True).first()
         if not user:
             raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
-        # RBAC: Gestor só vê da mesma empresa
+        # RBAC: GESTOR só vê da mesma empresa
         if current_user.role == UserRole.GESTOR and user.empresa_id != current_user.empresa_id:
             raise HTTPException(status_code=403, detail="Acesso negado")
 
@@ -114,12 +114,12 @@ def get_user_profile(
             "cpf": user.cpf,
             "endereco": user.endereco or "",
             "pretensao_salarial": user.pretensao_salarial or "",
-            "role": user.role.value if user.role else "Candidato",
+            "role": user.role.value if user.role else "CANDIDATO",
             "cargo": None,
             "departamento": None,
             "salario_atual": None,
             "admissao": None,
-            "status": "Ativo" if user.role != UserRole.CANDIDATO else "Candidato",
+            "status": "Ativo" if user.role != UserRole.CANDIDATO else "CANDIDATO",
         }
 
         # Contrato (se existir)
@@ -148,7 +148,7 @@ def get_user_profile(
 def get_user_activities(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role("Candidato"))
+    current_user: User = Depends(require_role("CANDIDATO"))
 ):
     if id != current_user.id:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -170,7 +170,7 @@ def get_user_activities(
 def get_user_candidatures(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role("Candidato"))
+    current_user: User = Depends(require_role("CANDIDATO"))
 ):
     if id != current_user.id:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -197,7 +197,7 @@ def get_user_candidatures(
 def get_user_contract(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Colaborador", "RH", "Admin"))
+    current_user: User = Depends(require_any_role("COLABORADOR", "RH", "ADMIN"))
 ):
     if id != current_user.id and current_user.role not in [UserRole.RH, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -219,7 +219,7 @@ def get_user_contract(
 def get_user_documents(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Colaborador", "RH", "Admin"))
+    current_user: User = Depends(require_any_role("COLABORADOR", "RH", "ADMIN"))
 ):
     if id != current_user.id and current_user.role not in [UserRole.RH, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -233,7 +233,7 @@ def get_user_documents(
 def get_daily_history(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Colaborador", "RH", "Admin"))
+    current_user: User = Depends(require_any_role("COLABORADOR", "RH", "ADMIN"))
 ):
     if id != current_user.id and current_user.role not in [UserRole.RH, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -247,7 +247,7 @@ def get_daily_history(
 def get_contract_history(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Colaborador", "RH", "Admin"))
+    current_user: User = Depends(require_any_role("COLABORADOR", "RH", "ADMIN"))
 ):
     if id != current_user.id and current_user.role not in [UserRole.RH, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -261,7 +261,7 @@ def get_contract_history(
 def get_pdi(
     id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("Colaborador", "RH", "Admin"))
+    current_user: User = Depends(require_any_role("COLABORADOR", "RH", "ADMIN"))
 ):
     if id != current_user.id and current_user.role not in [UserRole.RH, UserRole.ADMIN]:
         raise HTTPException(status_code=403, detail="Acesso negado")
@@ -347,14 +347,14 @@ def update_employee_contract(
     departamento: Optional[str] = None,
     salario_atual: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("RH", "Admin"))
+    current_user: User = Depends(require_any_role("RH", "ADMIN"))
 ):
     user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(404, "Usuário não encontrado")
     
     if user.role == UserRole.CANDIDATO:
-        raise HTTPException(400, "Usuário ainda é candidato")
+        raise HTTPException(400, "Usuário ainda é CANDIDATO")
 
     contract = db.query(EmployeeContract).filter(EmployeeContract.user_id == id).first()
     if not contract:
@@ -395,7 +395,7 @@ async def upload_document(
     nome: str = Form(...),  # ex: "Contrato de Trabalho", "Exame Admissional"
     arquivo: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("RH", "Admin", "Colaborador"))
+    current_user: User = Depends(require_any_role("RH", "ADMIN", "COLABORADOR"))
 ):
     user = db.query(User).filter(User.id == id).first()
     if not user:
@@ -425,14 +425,14 @@ def dismiss_employee(
     id: int,
     motivo: Optional[str] = None,
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_any_role("RH", "Admin"))
+    current_user: User = Depends(require_any_role("RH", "ADMIN"))
 ):
     user = db.query(User).filter(User.id == id).first()
     if not user:
         raise HTTPException(404, "Usuário não encontrado")
 
     if user.role == UserRole.CANDIDATO:
-        raise HTTPException(400, "Não é possível demitir um candidato")
+        raise HTTPException(400, "Não é possível demitir um CANDIDATO")
 
     contract = db.query(EmployeeContract).filter(EmployeeContract.user_id == id).first()
 
@@ -448,20 +448,20 @@ def dismiss_employee(
 
     # Desativa usuário e remove cargo
     user.is_active = False
-    user.role = UserRole.CANDIDATO  # opcional: volta pra candidato
+    user.role = UserRole.CANDIDATO  # opcional: volta pra CANDIDATO
     if contract:
         db.delete(contract)  # ou só limpa os campos
 
     db.commit()
 
-    return {"message": "Colaborador demitido com sucesso", "data": history.data}
+    return {"message": "COLABORADOR demitido com sucesso", "data": history.data}
 
 @router.post("/candidaturas")
 async def create_candidatura(
     job_id: int = Form(...),
     curriculo: UploadFile = File(...),
     db: Session = Depends(get_db),
-    current_user: User = Depends(require_role("Candidato"))
+    current_user: User = Depends(require_role("CANDIDATO"))
 ):
     if not curriculo.content_type == "application/pdf":
         raise HTTPException(400, "Apenas PDF")

@@ -1,19 +1,21 @@
+/* ===================== CONTAINER ===================== */
 .users-management-container {
-  padding: 32px;
+  padding: 36px;
   min-height: calc(100vh - 76px);
-  background: #f4f6fa;
-  font-family: "Inter", sans-serif;
+  background: linear-gradient(180deg, #f4f6fa 0%, #eef2ff 100%);
+  font-family: "Inter", system-ui, sans-serif;
   color: #1f2937;
 }
 
-/* Header */
+/* ===================== HEADER ===================== */
 .users-management-container .header {
   margin-bottom: 28px;
 }
 
-.users-management-container h1 {
-  font-size: 28px;
+.users-management-container .header h1 {
+  font-size: 30px;
   font-weight: 800;
+  color: #111827;
 }
 
 .users-management-container .header p {
@@ -22,114 +24,160 @@
   color: #4b5563;
 }
 
-/* Table */
+/* ===================== FILTER ===================== */
+.filters {
+  margin-bottom: 18px;
+}
+
+.filters input {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #c7d2fe;
+  font-size: 14px;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.filters input:focus {
+  outline: none;
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ===================== TABLE ===================== */
 .users-table {
   width: 100%;
   border-collapse: collapse;
   background: #ffffff;
-  border-radius: 22px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
   font-size: 14px;
 }
 
 .users-table thead {
-  background: #f1f5f9;
+  background: linear-gradient(180deg, #eef2ff, #e0e7ff);
 }
 
 .users-table th {
-  padding: 14px 16px;
+  padding: 16px;
   text-align: left;
   font-weight: 800;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  color: #1f2937;
+  border-bottom: 2px solid #c7d2fe;
 }
 
 .users-table td {
-  padding: 14px 16px;
+  padding: 16px;
   border-bottom: 1px solid #e5e7eb;
   vertical-align: middle;
 }
 
-.users-table tbody tr:hover {
-  background: #f9fafb;
+.users-table tbody tr {
+  transition: background 0.15s ease;
 }
 
-/* Role badge */
+.users-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* ===================== ROLE BADGE ===================== */
 .role-badge {
-  padding: 6px 12px;
+  display: inline-block;
+  padding: 6px 14px;
   border-radius: 999px;
-  background: #e0e7ff;
-  color: #3730a3;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: #ffffff;
   font-size: 12px;
   font-weight: 800;
-  display: inline-block;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.35);
 }
 
-/* Actions */
-.users-table button {
-  padding: 8px 12px;
+/* ===================== ACTIONS ===================== */
+.users-table td.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Select */
+.users-table select {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #c7d2fe;
+  font-size: 13px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.users-table select:focus {
+  outline: none;
+  border-color: #1f2937;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+/* ===================== DELETE BUTTON ===================== */
+.btn-delete {
+  padding: 9px 14px;
   border-radius: 10px;
   border: none;
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
-  background: #2563eb;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   color: #ffffff;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 6px 14px rgba(239, 68, 68, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.users-table button:hover {
-  opacity: 0.9;
+.btn-delete:hover {
   transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(239, 68, 68, 0.45);
 }
 
-/* Edit role */
-.edit-role {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* ===================== EMPTY STATE ===================== */
+.no-results {
+  text-align: center;
+  padding: 28px;
+  font-size: 14px;
+  color: #6b7280;
 }
 
-.edit-role select {
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  font-size: 13px;
-  background: #ffffff;
+/* ===================== NEW USER BUTTON ===================== */
+.btn-new {
+  margin-top: 24px;
+  padding: 14px 22px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #111827, #1f2937);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(79, 70, 229, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.edit-role select:focus {
-  outline: none;
-  border-color: #2563eb;
+.btn-new:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(79, 70, 229, 0.45);
 }
 
-/* Edit buttons */
-.edit-role button:first-of-type {
-  background: #16a34a;
-}
-
-.edit-role button:last-of-type {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-/* Responsivo */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .users-management-container {
     padding: 20px;
   }
 
-  .users-table {
-    font-size: 13px;
-  }
-
-  .edit-role {
+  .users-table td.actions {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .edit-role button {
+  .btn-new {
     width: 100%;
   }
 }

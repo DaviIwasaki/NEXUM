@@ -1,11 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routers import auth, users
-from app.api.routers import jobs
+from app.api.routers import auth, users, jobs, admin, config
 
 app = FastAPI(title="NEXUM API")
 
+app.include_router(auth.router)
 app.include_router(jobs.router)
+app.include_router(admin.router)
+app.include_router(config.router)
 
 # Middleware CORS reforçado
 app.add_middleware(

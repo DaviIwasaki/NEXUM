@@ -7,8 +7,6 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from typing import Optional
 
-from websockets import Router
-
 from app.infrastructure.db import get_db
 from app.domain.models import User, UserRole
 from app.config.settings import settings
